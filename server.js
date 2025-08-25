@@ -1,4 +1,4 @@
-// server.js — full, with style/personality + rotating variants (no structure change)
+// server.js — CV chatbot with sharp, professional personality layer (no structure changes)
 
 const express = require('express');
 const cors = require('cors');
@@ -11,7 +11,7 @@ const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,7 +38,7 @@ function cosineSim(a, b) {
   return dot / denom;
 }
 
-// ---------- Utility: tag detection ----------
+// ---------- Tag detection (unchanged structure) ----------
 const COMPANY_TAGS = ['gannaca', 'ingram', 'cancom', 'covestro'];
 const ALL_TAGS = [...COMPANY_TAGS, 'education', 'skills', 'tools', 'languages', 'certifications', 'early'];
 
@@ -51,73 +51,74 @@ function detectTag(qLower) {
   if (/\bskills?\b/.test(qLower)) return 'skills';
   if (/\btools?\b|\bsystems?\b|\bstack\b/.test(qLower)) return 'tools';
   if (/\blanguages?\b|\bromanian\b|\bgerman\b|\benglish\b/.test(qLower)) return 'languages';
+  if (/(early experience|voluntary roles|2008|2016)/.test(qLower)) return 'early';
   if (/\bcertifications?\b|\btraining\b|\bcourses?\b/.test(qLower)) return 'certifications';
-  if (/early experience|voluntary roles|2008|2016/.test(qLower)) return 'early';
   return null;
 }
 
-// ---------- Personality / style helpers ----------
-const VARIANTS = [
-  { id: 'bullets3',     instructions: 'Answer in 3 crisp bullet points, 10–16 words each. No preamble or closing.' },
-  { id: 'impactBullets',instructions: 'Give 2 task bullets and 1 impact bullet. Keep each under 16 words.' },
-  { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, maximum 40 words total. No list formatting.' },
-  { id: 'verbParagraph',instructions: 'One short paragraph using strong verbs; 3 sentences max, ~12–16 words each.' }
-];
-
-const rrMap = new Map(); // round-robin per normalized question
-function pickVariant(question, isCompany) {
-  // for company questions, prefer bullet formats; still rotate for variety
-  const pool = isCompany ? VARIANTS.filter(v => v.id === 'bullets3' || v.id === 'impactBullets') : VARIANTS;
-  const key = (question || '').trim().toLowerCase();
-  const n = (rrMap.get(key) || 0) + 1;
-  rrMap.set(key, n);
-  return pool[(n - 1) % pool.length];
-}
-
-function cheekyOrInterviewOverride(qLower) {
-  // normalize a bit
+// ---------- Smart boundaries + Interview shortcuts (sharp, professional) ----------
+function smartBoundaryAndInterview(qLower) {
   const q = qLower.replace(/[?.!]/g, ' ').trim();
 
-  // --- Personal / cheeky ---
+  // Personal boundaries
   if (q.includes('how old') || q.includes('age')) {
-    return "Cristina prefers to let results do the talking — age is just metadata.";
+    return "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.";
   }
   if (q.includes('kids') || q.includes('children') || q.includes('child')) {
-    return "No family details here. Professionally, she mentors teams and grows systems.";
+    return "Personal details aren’t relevant. If you’d like, ask about mentoring or team enablement.";
   }
   if (q.includes('single') || q.includes('married') || q.includes('relationship') || q.includes('partner') || q.includes('family')) {
-    return "That’s personal territory. Professionally, she’s committed to strategy and delivery.";
+    return "Let’s keep it professional. Happy to talk experience, strengths, and decision-making.";
   }
 
-  // --- Interview-style ---
+  // Interview themes (rotate wording for variety)
   if (q.includes('strength') || q.includes('strengths')) {
     const options = [
-      "Strengths: connecting strategy to execution, staying calm under pressure, aligning cross-functional teams.",
-      "She excels at translating business goals into workable systems and keeping teams synced under pressure.",
-      "Her edge: strategic clarity, execution discipline, and diplomacy across business, ops, and engineering."
+      "Strengths: fast pattern recognition, crisp communication, and reliable delivery in complex environments.",
+      "She connects strategy to execution quickly, communicates with precision, and delivers predictably.",
+      "Core strengths: systems thinking, concise articulation, and making complex work legible for teams."
     ];
-    return options[Math.floor(Math.random() * options.length)];
+    return options[Math.floor(Math.random()*options.length)];
   }
 
   if (q.includes('weakness') || q.includes('flaw') || q.includes('flaws')) {
     const options = [
-      "She can over-polish details — managed by time-boxing and clear ‘good-enough’ criteria.",
-      "Perfectionism shows up — she mitigates it with deadlines and peer reviews.",
-      "Tendency to over-optimize; she counters it by prioritizing impact and shipping earlier."
+      "She tends to over-polish; mitigated by time-boxing and clear ‘good-enough’ criteria.",
+      "Perfectionist streak—managed with deadlines, peer review, and shipping iteratively.",
+      "Bias toward optimizing details; balanced by prioritizing impact and release cadence."
     ];
-    return options[Math.floor(Math.random() * options.length)];
+    return options[Math.floor(Math.random()*options.length)];
   }
 
   if (q.includes('challenge') || q.includes('hard time') || q.includes('difficult') || q.includes('hardest')) {
     const options = [
-      "Tough case: onboarding partners amid shifting systems at CANCOM — she aligned teams and stabilized flows.",
-      "A challenge: conflicting APIs and timelines in marketplace onboarding; she mapped risks and unblocked delivery.",
-      "Hard moment: parallel tech changes during partner onboarding; she coordinated cross-teams to restore predictability."
+      "Significant challenge: marketplace onboarding amid shifting systems—she aligned stakeholders and stabilized operations.",
+      "Tough case: conflicting integrations and timelines—she mapped risks, reset scope, and restored predictability.",
+      "High-ambiguity scenario: multiple dependencies moving at once—she clarified ownership and rebuilt a reliable flow."
     ];
-    return options[Math.floor(Math.random() * options.length)];
+    return options[Math.floor(Math.random()*options.length)];
   }
 
   return null;
+}
+
+// ---------- Rotating style variants (concise, professional) ----------
+const VARIANTS = [
+  { id: 'bullets3',      instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
+  { id: 'impactBullets', instructions: 'Provide 2 action bullets + 1 outcome bullet. Max 16 words each.' },
+  { id: 'twoSentences',  instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
+  { id: 'shortPara',     instructions: 'One short paragraph, 2–3 sentences with strong verbs; avoid filler.' }
+];
+
+const rrMap = new Map();
+function pickVariant(question, preferBullets) {
+  const pool = preferBullets
+    ? VARIANTS.filter(v => v.id === 'bullets3' || v.id === 'impactBullets')
+    : VARIANTS;
+  const key = (question || '').trim().toLowerCase();
+  const n = (rrMap.get(key) || 0) + 1;
+  rrMap.set(key, n);
+  return pool[(n - 1) % pool.length];
 }
 
 function enforceShort(text, maxWords = 90) {
@@ -140,27 +141,27 @@ app.post('/chat', async (req, res) => {
       return res.json({ answer: "Please ask a question." });
     }
     if (!KB.length) {
-      return res.json({ answer: "I don't have Cristina's CV context loaded yet." });
+      return res.json({ answer: "I don't have Cristina’s CV context loaded yet." });
     }
 
     const qLower = message.toLowerCase();
     const desiredTag = detectTag(qLower);
-    const isCompany = COMPANY_TAGS.includes(desiredTag || '');
+    const preferBullets = COMPANY_TAGS.includes(desiredTag || '');
 
-    // Cheeky/interview overrides first
-    const override = cheekyOrInterviewOverride(qLower);
+    // 1) Smart boundary / interview overrides (immediate)
+    const override = smartBoundaryAndInterview(qLower);
     if (override) {
       return res.json({ answer: override });
     }
 
-    // Embed the question
+    // 2) Embed the question
     const emb = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
     });
     const qemb = emb.data[0].embedding;
 
-    // Score KB
+    // 3) Score KB
     const allScored = KB.map(it => ({
       id: it.id,
       tag: it.tag,
@@ -168,35 +169,43 @@ app.post('/chat', async (req, res) => {
       score: cosineSim(qemb, it.embedding),
     }));
 
-    // Strict tag filter if a tag is detected
+    // 4) Strict tag filter if detected
     let pool = allScored;
     if (desiredTag) {
       pool = allScored.filter(s => s.tag === desiredTag);
       if (!pool.length) {
-        const polite = "I don’t have that in the CV context.";
+        const polite = "Not in scope for the CV context.";
         return res.json(debug ? { answer: polite, used_chunks: [] } : { answer: polite });
       }
     }
     if (!pool.length) pool = allScored;
 
-    // Top-3 chunks
+    // 5) Top-3 chunks -> context
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
 
-    // Rotate styles so repeats don't look the same
-    const variant = pickVariant(message, isCompany);
+    // 6) Rotating style variant
+    const variant = pickVariant(message, preferBullets);
 
-    // System prompt: concise + paraphrase + no mixing
-    const system =
-      "You are Cristina Merisoiu’s CV assistant.\n" +
-      "Use ONLY the provided CV context. Reformulate in fresh wording; avoid copying lines verbatim.\n" +
-      "Stay factual, match the user's language, and be concise by default.\n" +
-      "If a specific company/section is implied, answer ONLY about it — no mixing.\n" +
-      "Do not invent facts not present in the context.\n" +
-      "Global length rule: keep it under ~90 words unless asked otherwise.";
+    // 7) Persona-aware rewriting (sharp, professional; avoid verbatim CV; avoid banned words)
+    const personaSystem =
+      "You are writing on behalf of Cristina Merisoiu for recruiters.\n" +
+      "Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.\n" +
+      "Never use the word 'chaos'. Prefer: clarity, reliability, structure, predictable delivery, high-ambiguity environments.\n" +
+      "Always reformulate—do not copy CV sentences verbatim. Keep facts grounded in the provided context only.\n" +
+      "If a company/section is implied, answer only about that scope. No mixing across roles.\n" +
+      "Global length rule: ~90 words max unless asked otherwise.";
+
+    const phrasingHints =
+      "Preferred phrasing examples:\n" +
+      "- Built clarity in complex environments; translated ambiguity into reliable workflows.\n" +
+      "- Connected strategy to execution; aligned stakeholders; delivered predictably.\n" +
+      "- Structured integrations and onboarding with measurable outcomes.\n" +
+      "- Communicated with precision; made decisions legible for teams.\n" +
+      "Avoid filler like: passion, synergy, wheelhouse, chaos.";
 
     const companyHint = desiredTag
-      ? `\nInstruction: The user asked about '${desiredTag}'. Answer ONLY about this tag.`
+      ? `\nScope: The user asked about '${desiredTag}'. Restrict the answer to this tag only.`
       : '';
 
     const styleHint = `\nStyle variant: ${variant.instructions}`;
@@ -205,21 +214,21 @@ app.post('/chat', async (req, res) => {
       (contextBlocks.length
         ? `CONTEXT (top matches):\n${contextBlocks.join('\n\n')}\n\n`
         : 'CONTEXT:\n(none)\n\n') +
-      `QUESTION: ${message}${companyHint}${styleHint}`;
+      `QUESTION: ${message}\n\n${phrasingHints}${companyHint}${styleHint}`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: system },
+        { role: 'system', content: personaSystem },
         { role: 'user', content: userContent },
       ],
-      temperature: isCompany ? 0.5 : 0.7, // a touch of variety without drifting
+      temperature: preferBullets ? 0.5 : 0.7,
       max_tokens: 220
     });
 
     let reply = completion.choices?.[0]?.message?.content || 'No reply.';
-    reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina'); // small de-formalizer
-    reply = enforceShort(reply, 90); // extra safety on length
+    reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina');
+    reply = enforceShort(reply, 90);
 
     if (debug) {
       return res.json({
