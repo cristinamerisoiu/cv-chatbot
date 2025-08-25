@@ -125,8 +125,8 @@ form.addEventListener("submit", async (e) => {
 });
 
 // Optional: greet message
-addMessage("CristinaBot",
-  "Hi! Ask me about roles (gannaca, Ingram, CANCOM, Covestro), skills, tools, languages — or go interview-style with strengths, weaknesses, and toughest challenges.",
-  'bot'
+addMessage("Work, skills, challenges, growth — let’s keep it real and to the point."
+'
 );
+
 
