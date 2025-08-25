@@ -1,4 +1,4 @@
-// server.js — CV chatbot with sharp, professional personality layer (no structure changes)
+// server.js — strict scoped answers + professional persona + rotating boundaries
 
 const express = require('express');
 const cors = require('cors');
@@ -38,9 +38,10 @@ function cosineSim(a, b) {
   return dot / denom;
 }
 
-// ---------- Tag detection (unchanged structure) ----------
+// ---------- Tag detection ----------
 const COMPANY_TAGS = ['gannaca', 'ingram', 'cancom', 'covestro'];
-const ALL_TAGS = [...COMPANY_TAGS, 'education', 'skills', 'tools', 'languages', 'certifications', 'early'];
+const SECTION_TAGS = ['education','skills','tools','languages','certifications','early'];
+const ALL_TAGS = [...COMPANY_TAGS, ...SECTION_TAGS];
 
 function detectTag(qLower) {
   if (/\bgannaca\b/.test(qLower)) return 'gannaca';
@@ -56,53 +57,86 @@ function detectTag(qLower) {
   return null;
 }
 
-// ---------- Smart boundaries + Interview shortcuts (sharp, professional) ----------
+// ---------- Sharp boundaries + interview (rotating) ----------
 function smartBoundaryAndInterview(qLower) {
   const q = qLower.replace(/[?.!]/g, ' ').trim();
 
-  // Personal boundaries
+  // ----- Personal boundaries -----
   if (q.includes('how old') || q.includes('age')) {
-    return "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.";
+    const opts = [
+      "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.",
+      "Let’s optimize for signal: skills, outcomes, and alignment matter more than age.",
+      "What’s relevant is impact and fit. Age doesn’t predict either."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
   if (q.includes('kids') || q.includes('children') || q.includes('child')) {
-    return "Personal details aren’t relevant. If you’d like, ask about mentoring or team enablement.";
+    const opts = [
+      "Personal details aren’t relevant. Happy to discuss mentoring and team development instead.",
+      "Let’s keep it professional. Ask about enablement, leadership, or outcomes.",
+      "That’s outside scope. If helpful, we can cover coaching and collaboration practices."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
   if (q.includes('single') || q.includes('married') || q.includes('relationship') || q.includes('partner') || q.includes('family')) {
-    return "Let’s keep it professional. Happy to talk experience, strengths, and decision-making.";
+    const opts = [
+      "Let’s keep the focus on experience, decision-making, and outcomes.",
+      "Professional scope only: strengths, track record, and fit.",
+      "Happy to cover roles, skills, and results — personal details aren’t part of this profile."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  // Interview themes (rotate wording for variety)
+  // ----- Interview-style themes -----
   if (q.includes('strength') || q.includes('strengths')) {
-    const options = [
+    const opts = [
       "Strengths: fast pattern recognition, crisp communication, and reliable delivery in complex environments.",
       "She connects strategy to execution quickly, communicates with precision, and delivers predictably.",
       "Core strengths: systems thinking, concise articulation, and making complex work legible for teams."
     ];
-    return options[Math.floor(Math.random()*options.length)];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
-
   if (q.includes('weakness') || q.includes('flaw') || q.includes('flaws')) {
-    const options = [
+    const opts = [
       "She tends to over-polish; mitigated by time-boxing and clear ‘good-enough’ criteria.",
-      "Perfectionist streak—managed with deadlines, peer review, and shipping iteratively.",
-      "Bias toward optimizing details; balanced by prioritizing impact and release cadence."
+      "Perfectionist streak — managed with deadlines, peer review, and incremental releases.",
+      "Bias toward optimizing details; balanced by prioritizing impact and shipping cadence."
     ];
-    return options[Math.floor(Math.random()*options.length)];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+  if (q.includes('challenge') || q.includes('hard time') || q.includes('difficult') || q.includes('hardest')) {
+    const opts = [
+      "Marketplace onboarding amid shifting systems — she aligned stakeholders and stabilized operations.",
+      "Conflicting integrations and timelines — she mapped risks, reset scope, and restored predictability.",
+      "Multiple moving dependencies — she clarified ownership and rebuilt a reliable flow."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  if (q.includes('challenge') || q.includes('hard time') || q.includes('difficult') || q.includes('hardest')) {
-    const options = [
-      "Significant challenge: marketplace onboarding amid shifting systems—she aligned stakeholders and stabilized operations.",
-      "Tough case: conflicting integrations and timelines—she mapped risks, reset scope, and restored predictability.",
-      "High-ambiguity scenario: multiple dependencies moving at once—she clarified ownership and rebuilt a reliable flow."
+  // ----- New additions -----
+  if (q.includes('should we hire') || q.includes('hire her')) {
+    const opts = [
+      "Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
+      "If the goal is precision, adaptability, and structured delivery — the hire is self-evident.",
+      "Her track record shows: she builds systems, translates vision into execution, and sustains outcomes."
     ];
-    return options[Math.floor(Math.random()*options.length)];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  if (q.includes('salary') || q.includes('compensation') || q.includes('pay')) {
+    const opts = [
+      "Salary expectations depend on role scope and market benchmarks — best aligned during formal discussions.",
+      "Compensation is context-driven. Alignment with responsibilities and market standards is the right frame.",
+      "That’s a structured conversation for the hiring stage — tied to scope, value, and benchmarks."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
 
   return null;
 }
 
-// ---------- Rotating style variants (concise, professional) ----------
+
+// ---------- Rotating style variants ----------
 const VARIANTS = [
   { id: 'bullets3',      instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
   { id: 'impactBullets', instructions: 'Provide 2 action bullets + 1 outcome bullet. Max 16 words each.' },
@@ -127,11 +161,11 @@ function enforceShort(text, maxWords = 90) {
   return words.slice(0, maxWords).join(' ') + '…';
 }
 
-// ---------- Health checks ----------
+// ---------- Health ----------
 app.get('/', (_, res) => res.send('OK: server up'));
 app.get('/ping', (_, res) => res.json({ ok: true, chunks: KB.length }));
 
-// ---------- Chat endpoint ----------
+// ---------- Chat ----------
 app.post('/chat', async (req, res) => {
   const { message } = req.body || {};
   const debug = req.query.debug === 'true';
@@ -146,15 +180,14 @@ app.post('/chat', async (req, res) => {
 
     const qLower = message.toLowerCase();
     const desiredTag = detectTag(qLower);
-    const preferBullets = COMPANY_TAGS.includes(desiredTag || '');
+    const isCompany = COMPANY_TAGS.includes(desiredTag || '');
+    const isSection = SECTION_TAGS.includes(desiredTag || '');
 
-    // 1) Smart boundary / interview overrides (immediate)
+    // 1) Overrides first
     const override = smartBoundaryAndInterview(qLower);
-    if (override) {
-      return res.json({ answer: override });
-    }
+    if (override) return res.json({ answer: override });
 
-    // 2) Embed the question
+    // 2) Embed question
     const emb = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
@@ -169,7 +202,7 @@ app.post('/chat', async (req, res) => {
       score: cosineSim(qemb, it.embedding),
     }));
 
-    // 4) Strict tag filter if detected
+    // 4) STRICT scope if tag detected
     let pool = allScored;
     if (desiredTag) {
       pool = allScored.filter(s => s.tag === desiredTag);
@@ -178,43 +211,35 @@ app.post('/chat', async (req, res) => {
         return res.json(debug ? { answer: polite, used_chunks: [] } : { answer: polite });
       }
     }
-    if (!pool.length) pool = allScored;
 
-    // 5) Top-3 chunks -> context
+    // 5) Top-3 chunks
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
 
-    // 6) Rotating style variant
-    const variant = pickVariant(message, preferBullets);
+    // 6) Variant
+    const variant = pickVariant(message, isCompany);
 
-    // 7) Persona-aware rewriting (sharp, professional; avoid verbatim CV; avoid banned words)
+    // 7) Persona + strict phrasing rules
     const personaSystem =
-      "You are writing on behalf of Cristina Merisoiu for recruiters.\n" +
+      "You write on behalf of Cristina Merisoiu for recruiters.\n" +
       "Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.\n" +
-      "Never use the word 'chaos'. Prefer: clarity, reliability, structure, predictable delivery, high-ambiguity environments.\n" +
-      "Always reformulate—do not copy CV sentences verbatim. Keep facts grounded in the provided context only.\n" +
-      "If a company/section is implied, answer only about that scope. No mixing across roles.\n" +
-      "Global length rule: ~90 words max unless asked otherwise.";
+      "Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.\n" +
+      "Global length: ~90 words max unless asked otherwise.\n" +
+      "Never mention companies/roles outside the requested scope.\n" +
+      "Avoid buzzwords and filler.";
 
-    const phrasingHints =
-      "Preferred phrasing examples:\n" +
-      "- Built clarity in complex environments; translated ambiguity into reliable workflows.\n" +
-      "- Connected strategy to execution; aligned stakeholders; delivered predictably.\n" +
-      "- Structured integrations and onboarding with measurable outcomes.\n" +
-      "- Communicated with precision; made decisions legible for teams.\n" +
-      "Avoid filler like: passion, synergy, wheelhouse, chaos.";
+    // Scope-specific constraints to stop mixing:
+    const scopeRules = isCompany
+      ? "For company questions: FIRST line must include role title and timeframe drawn from context. Do NOT mention any other company."
+      : "For section questions (skills/tools/languages/education/certifications/early): Answer ONLY from that section. Do NOT mention company names or tasks unless explicitly asked.";
 
-    const companyHint = desiredTag
-      ? `\nScope: The user asked about '${desiredTag}'. Restrict the answer to this tag only.`
-      : '';
-
-    const styleHint = `\nStyle variant: ${variant.instructions}`;
+    const styleHint = `Style variant: ${variant.instructions}`;
 
     const userContent =
       (contextBlocks.length
         ? `CONTEXT (top matches):\n${contextBlocks.join('\n\n')}\n\n`
         : 'CONTEXT:\n(none)\n\n') +
-      `QUESTION: ${message}\n\n${phrasingHints}${companyHint}${styleHint}`;
+      `QUESTION: ${message}\n\n${scopeRules}\n${styleHint}`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -222,7 +247,7 @@ app.post('/chat', async (req, res) => {
         { role: 'system', content: personaSystem },
         { role: 'user', content: userContent },
       ],
-      temperature: preferBullets ? 0.5 : 0.7,
+      temperature: isCompany ? 0.5 : 0.7,
       max_tokens: 220
     });
 
@@ -233,6 +258,7 @@ app.post('/chat', async (req, res) => {
     if (debug) {
       return res.json({
         answer: reply,
+        tag: desiredTag || '(auto)',
         style_variant: variant.id,
         used_chunks: topK.map(s => ({
           tag: s.tag,
