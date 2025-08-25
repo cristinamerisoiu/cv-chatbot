@@ -1,4 +1,4 @@
-// server.js — strict scoped answers + professional persona + rotating boundaries
+// server.js — strict scope, third-person only, full lists for skills/tools/languages
 
 const express = require('express');
 const cors = require('cors');
@@ -57,11 +57,10 @@ function detectTag(qLower) {
   return null;
 }
 
-// ---------- Sharp boundaries + interview (rotating) ----------
+// ---------- Smart boundaries + interview (rotating) ----------
 function smartBoundaryAndInterview(qLower) {
   const q = qLower.replace(/[?.!]/g, ' ').trim();
 
-  // ----- Personal boundaries -----
   if (q.includes('how old') || q.includes('age')) {
     const opts = [
       "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.",
@@ -87,7 +86,6 @@ function smartBoundaryAndInterview(qLower) {
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  // ----- Interview-style themes -----
   if (q.includes('strength') || q.includes('strengths')) {
     const opts = [
       "Strengths: fast pattern recognition, crisp communication, and reliable delivery in complex environments.",
@@ -113,7 +111,6 @@ function smartBoundaryAndInterview(qLower) {
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  // ----- New additions -----
   if (q.includes('should we hire') || q.includes('hire her')) {
     const opts = [
       "Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
@@ -132,11 +129,14 @@ function smartBoundaryAndInterview(qLower) {
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
+  if (q.includes('contact') || q.includes('email') || q.includes('phone')) {
+    return "Her contact details are provided in the original CV PDF you received.";
+  }
+
   return null;
 }
 
-
-// ---------- Rotating style variants ----------
+// ---------- Variants ----------
 const VARIANTS = [
   { id: 'bullets3',      instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
   { id: 'impactBullets', instructions: 'Provide 2 action bullets + 1 outcome bullet. Max 16 words each.' },
@@ -155,10 +155,24 @@ function pickVariant(question, preferBullets) {
   return pool[(n - 1) % pool.length];
 }
 
+// Hard cap with a bit more room for section lists
 function enforceShort(text, maxWords = 90) {
   const words = text.trim().split(/\s+/);
   if (words.length <= maxWords) return text.trim();
   return words.slice(0, maxWords).join(' ') + '…';
+}
+
+// Belt-and-suspenders: strip first-person if it ever slips
+function enforceThirdPerson(text) {
+  // crude but safe enough for our use-case; avoids touching inside words
+  return text
+    .replace(/\bI am\b/gi, 'She is')
+    .replace(/\bI was\b/gi, 'She was')
+    .replace(/\bI have\b/gi, 'She has')
+    .replace(/\bI’ve\b/gi, 'She has')
+    .replace(/\bI\b/gi, 'She')
+    .replace(/\bmy\b/gi, 'her')
+    .replace(/\bme\b/gi, 'her');
 }
 
 // ---------- Health ----------
@@ -183,18 +197,18 @@ app.post('/chat', async (req, res) => {
     const isCompany = COMPANY_TAGS.includes(desiredTag || '');
     const isSection = SECTION_TAGS.includes(desiredTag || '');
 
-    // 1) Overrides first
+    // 1) Overrides
     const override = smartBoundaryAndInterview(qLower);
     if (override) return res.json({ answer: override });
 
-    // 2) Embed question
+    // 2) Embed
     const emb = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
     });
     const qemb = emb.data[0].embedding;
 
-    // 3) Score KB
+    // 3) Score
     const allScored = KB.map(it => ({
       id: it.id,
       tag: it.tag,
@@ -202,7 +216,7 @@ app.post('/chat', async (req, res) => {
       score: cosineSim(qemb, it.embedding),
     }));
 
-    // 4) STRICT scope if tag detected
+    // 4) Strict scope
     let pool = allScored;
     if (desiredTag) {
       pool = allScored.filter(s => s.tag === desiredTag);
@@ -212,34 +226,44 @@ app.post('/chat', async (req, res) => {
       }
     }
 
-    // 5) Top-3 chunks
+    // 5) Top-3
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
 
-    // 6) Variant
+    // 6) Variant (companies rotate bullets; sections will use FULL LIST instructions)
     const variant = pickVariant(message, isCompany);
 
-    // 7) Persona + strict phrasing rules
+    // 7) Persona prompt
     const personaSystem =
-      "You write on behalf of Cristina Merisoiu for recruiters.\n" +
+      "You are presenting Cristina Merisoiu’s professional CV as a chatbot for recruiters.\n" +
+      "Never use first person (‘I’, ‘me’, ‘my’). Always refer to Cristina in third person (‘Cristina’, ‘she’, ‘her’).\n" +
       "Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.\n" +
       "Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.\n" +
-      "Global length: ~90 words max unless asked otherwise.\n" +
-      "Never mention companies/roles outside the requested scope.\n" +
-      "Avoid buzzwords and filler.";
+      "Avoid buzzwords and filler. Never use the word ‘chaos’.\n" +
+      "Global length guideline: ~90 words max unless asked otherwise.";
 
-    // Scope-specific constraints to stop mixing:
+    // Scope rules
     const scopeRules = isCompany
-      ? "For company questions: FIRST line must include role title and timeframe drawn from context. Do NOT mention any other company."
-      : "For section questions (skills/tools/languages/education/certifications/early): Answer ONLY from that section. Do NOT mention company names or tasks unless explicitly asked.";
+      ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
+      : "For section questions (skills/tools/languages/education/certifications/early): Enumerate ALL relevant items from that section; do NOT omit items or summarize them away. Do NOT mention companies or tasks.";
 
-    const styleHint = `Style variant: ${variant.instructions}`;
+    // Section-specific instruction to keep full lists intact
+    const sectionHint = isSection
+      ? "Format lists cleanly (bullets or compact lines). Keep every item present in context verbatim or lightly paraphrased."
+      : "";
+
+    const styleHint = isSection
+      ? "Style: structured list preferred; prioritize completeness over brevity for this answer."
+      : `Style variant: ${variant.instructions}`;
+
+    // Slightly higher cap for section answers
+    const maxWords = isSection ? 140 : 90;
 
     const userContent =
       (contextBlocks.length
         ? `CONTEXT (top matches):\n${contextBlocks.join('\n\n')}\n\n`
         : 'CONTEXT:\n(none)\n\n') +
-      `QUESTION: ${message}\n\n${scopeRules}\n${styleHint}`;
+      `QUESTION: ${message}\n\n${scopeRules}\n${sectionHint}\n${styleHint}`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -247,19 +271,18 @@ app.post('/chat', async (req, res) => {
         { role: 'system', content: personaSystem },
         { role: 'user', content: userContent },
       ],
-      temperature: isCompany ? 0.5 : 0.7,
-      max_tokens: 220
+      temperature: isCompany ? 0.5 : 0.6,
+      max_tokens: 260
     });
 
     let reply = completion.choices?.[0]?.message?.content || 'No reply.';
     reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina');
-    reply = enforceShort(reply, 90);
+    reply = enforceShort(enforceThirdPerson(reply), maxWords);
 
     if (debug) {
       return res.json({
         answer: reply,
         tag: desiredTag || '(auto)',
-        style_variant: variant.id,
         used_chunks: topK.map(s => ({
           tag: s.tag,
           score: Number(s.score.toFixed(3)),
