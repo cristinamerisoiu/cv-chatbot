@@ -126,7 +126,7 @@ form.addEventListener("submit", async (e) => {
 
 // Optional: greet message
 addMessage("Work, skills, challenges, growth — let’s keep it real and to the point."
-'
 );
+
 
 
