@@ -1,7 +1,8 @@
 // Frontend with simple Markdown-like rendering for bullets, numbers, links.
 // No backend change needed.
 
-const GPT_BACKEND_URL = 'http://localhost:3000/chat'; // keep your port if different
+const GPT_BACKEND_URL = 'https://cv-chatbot-f0ej.onrender.com/chat';
+ // keep your port if different
 
 const chatBox = document.getElementById("chat-box");
 const form = document.getElementById("chat-form");
@@ -128,3 +129,4 @@ addMessage("CristinaBot",
   "Hi! Ask me about roles (gannaca, Ingram, CANCOM, Covestro), skills, tools, languages — or go interview-style with strengths, weaknesses, and toughest challenges.",
   'bot'
 );
+
