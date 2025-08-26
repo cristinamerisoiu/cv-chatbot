@@ -140,7 +140,7 @@ function smartBoundaryAndInterview(qLower) {
   if (/\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(q)) {
     const opts = [
       "She thinks in systems: spot patterns fast, frame the problem cleanly, decide with evidence, and communicate the path forward in plain language.",
-      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before."
+      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before.",
       "She connects dots faster than most realize, brings clarity where others stall, and navigates pressure with sharp wit and quiet precision."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
@@ -351,4 +351,5 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
