@@ -61,7 +61,8 @@ function detectTag(qLower) {
 function smartBoundaryAndInterview(qLower) {
   const q = qLower.replace(/[?.!]/g, ' ').trim();
 
-  if (q.includes('how old') || q.includes('age')) {
+  // ----- Personal boundaries (with word-boundary regex for 'age') -----
+  if (/\bhow\s+old\b/.test(q) || /\b(age|years\s+old)\b/.test(q)) {
     const opts = [
       "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.",
       "Let’s optimize for signal: skills, outcomes, and alignment matter more than age.",
@@ -69,24 +70,25 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (q.includes('kids') || q.includes('children') || q.includes('child')) {
+  if (/\b(kids|children|child)\b/.test(q)) {
     const opts = [
       "Personal details aren’t relevant. Happy to discuss mentoring and team development instead.",
       "Let’s keep it professional. Ask about enablement, leadership, or outcomes.",
-      "That’s outside scope. If helpful, we can cover coaching and collaboration practices."
+      "That’s outside scope. You shouldn't ask that."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (q.includes('single') || q.includes('married') || q.includes('relationship') || q.includes('partner') || q.includes('family')) {
+  if (/\b(single|married|relationship|partner|family)\b/.test(q)) {
     const opts = [
       "Let’s keep the focus on experience, decision-making, and outcomes.",
       "Professional scope only: strengths, track record, and fit.",
-      "Happy to cover roles, skills, and results — personal details aren’t part of this profile."
+      "Happy to cover roles, skills, and results - personal details aren’t part of this profile."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  if (q.includes('strength') || q.includes('strengths')) {
+  // ----- Interview-style themes (existing) -----
+  if (/\bstrengths?\b/.test(q)) {
     const opts = [
       "Strengths: fast pattern recognition, crisp communication, and reliable delivery in complex environments.",
       "She connects strategy to execution quickly, communicates with precision, and delivers predictably.",
@@ -94,7 +96,7 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (q.includes('weakness') || q.includes('flaw') || q.includes('flaws')) {
+  if (/\b(weakness|weaknesses|flaw|flaws)\b/.test(q)) {
     const opts = [
       "She tends to over-polish; mitigated by time-boxing and clear ‘good-enough’ criteria.",
       "Perfectionist streak — managed with deadlines, peer review, and incremental releases.",
@@ -102,39 +104,83 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (q.includes('challenge') || q.includes('hard time') || q.includes('difficult') || q.includes('hardest')) {
+  if (/\b(challenge|hard\s*time|difficult|hardest)\b/.test(q)) {
     const opts = [
-      "Marketplace onboarding amid shifting systems — she aligned stakeholders and stabilized operations.",
-      "Conflicting integrations and timelines — she mapped risks, reset scope, and restored predictability.",
-      "Multiple moving dependencies — she clarified ownership and rebuilt a reliable flow."
+      "Marketplace onboarding amid shifting systems - she aligned stakeholders and stabilized operations.",
+      "Conflicting integrations and timelines - she mapped risks, reset scope, and restored predictability.",
+      "Multiple moving dependencies - she clarified ownership and rebuilt a reliable flow."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  if (q.includes('should we hire') || q.includes('hire her')) {
+  // ----- New: Should we hire her? / Salary -----
+  if (/\b(should\s+we\s+hire|hire\s+her)\b/.test(q)) {
     const opts = [
-      "Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
-      "If the goal is precision, adaptability, and structured delivery — the hire is self-evident.",
+      "Of course.Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
+      "If the goal is precision, adaptability, and structured delivery - the hire is self-evident.",
       "Her track record shows: she builds systems, translates vision into execution, and sustains outcomes."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
-  if (q.includes('salary') || q.includes('compensation') || q.includes('pay')) {
+  if (/\b(salary|compensation|pay)\b/.test(q)) {
     const opts = [
-      "Salary expectations depend on role scope and market benchmarks — best aligned during formal discussions.",
+      "Salary expectations depend on role scope and market benchmarks - best aligned during formal discussions.",
       "Compensation is context-driven. Alignment with responsibilities and market standards is the right frame.",
-      "That’s a structured conversation for the hiring stage — tied to scope, value, and benchmarks."
+      "That’s a structured conversation for the hiring stage - tied to scope, value, and benchmarks."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
 
-  if (q.includes('contact') || q.includes('email') || q.includes('phone')) {
+  // ----- New: Contact details -----
+  if (/\b(contact|email|phone)\b/.test(q)) {
     return "Her contact details are provided in the original CV PDF you received.";
+  }
+
+  // ----- New: Thinking / style / how she works (elegant prose, no bullets) -----
+  if (/\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(q)) {
+    const opts = [
+      "She thinks in systems: spot patterns fast, frame the problem cleanly, decide with evidence, and communicate the path forward in plain language.",
+      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before."
+      "She connects dots faster than most realize, brings clarity where others stall, and navigates pressure with sharp wit and quiet precision."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  if (/\b(work\s+style|how\s+does\s+she\s+work|how\s+she\s+works|way\s+of\s+working|operating\s+style)\b/.test(q)) {
+    const opts = [
+      "She absorbs context fast, spots what actually matters, and moves from ambiguity to action before the room agrees what the problem is.",
+      "She mixes strategic focus with creative improvisation - balancing precision when it counts and speed when it’s needed."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  if (/\b(communication\s+style|how\s+she\s+communicates|communicator)\b/.test(q)) {
+    const opts = [
+      "She communicates with intent: every word serves a purpose. Whether she's crafting strategy or giving feedback, her style is direct, smart, and tuned to the audience - always clear, never performative.",
+      "Her communication cuts through noise. She doesn’t over-explain or sugarcoat. Instead, she brings structure, nuance, and the kind of clarity that turns complexity into alignment."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  if (/\b(decision\s+making|decision\-making|how\s+she\s+decides|decision\s+style)\b/.test(q)) {
+    const opts = [
+      "She makes fast, informed decisions when speed matters - and slows down when precision is required. She combines instinct with analysis, never defaulting to autopilot.",
+      "She’s not afraid to take responsibility. Her decisions are driven by relevance, not trends, and by asking the right questions."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  if (/\b(what\s+is\s+she\s+like|who\s+is\s+she|describe\s+her|her\s+essence)\b/.test(q)) {
+    const opts = [
+      "She’s the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn’t dare to. Wit like flint, focus when it counts, and a restlessness that doesn’t settle for ‘fine’. She turns systems into stories, stories into action, and action into results.",
+      "Think strategic operator meets pattern disruptor. She thrives in ambiguity, doesn’t wait for permission, and doesn’t waste time. High-context, high-output, and with an amazing sense of humor."
+    ];
+    return opts[Math.floor(Math.random()*opts.length)];
   }
 
   return null;
 }
+
 
 // ---------- Variants ----------
 const VARIANTS = [
@@ -305,3 +351,4 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
