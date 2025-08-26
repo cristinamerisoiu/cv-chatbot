@@ -19,6 +19,9 @@
 
   --accent: #0ea5e9; /* subtle sky blue for focus/links */
   --radius: 14px;
+
+  /* hero background fallback gradient for when image hasn't loaded yet */
+  --hero-fallback: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.15));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,11 +38,13 @@
     --you-ink: #e7eaee;
 
     --accent: #7dd3fc;
+    --hero-fallback: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.25));
   }
 }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+
 body {
   margin: 0;
   font: 15px/1.5 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -48,9 +53,35 @@ body {
   display: grid;
   place-items: center;
   padding: 24px;
+  position: relative;
 }
 
+/* ========== FULL-BLEED HERO BACKGROUND (TOP HALF) ========== */
+/* Shows CMheader.jpg behind the UI, covering the top 50% of the viewport.
+   No HTML needed—pure CSS. */
+body::before {
+  content: "";
+  position: fixed;
+  z-index: 0;              /* behind everything */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50vh;            /* upper half of screen */
+  background-image:
+    var(--hero-fallback),
+    url("CMheader.jpg");   /* make sure file exists at site root */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;    /* never block clicks */
+  /* soft vignette at the bottom edge to blend into page */
+  box-shadow: inset 0 -80px 120px -60px rgba(0,0,0,.35);
+}
+
+/* Keep the chat app exactly as-is (unchanged size/layout) */
 .app {
+  position: relative;
+  z-index: 1;              /* above the hero background */
   width: min(880px, 100%);
   background: var(--panel);
   border: 1px solid var(--line);
@@ -182,60 +213,7 @@ body {
   border-color: color-mix(in srgb, var(--ink) 24%, var(--line));
 }
 
-.hero {
-  width: 100%;
-  height: 50vh; /* top half */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #000; /* fallback */
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* makes it elegant */
-}
-
 @media (max-width: 520px) {
   .msg .bubble { max-width: 88%; }
   .subtitle { display: none; }
 }
-/* ===== Hero Section (full-bleed half screen) ===== */
-html, body { height: 100%; margin: 0; }
-
-.hero {
-  height: 50vh;              /* half of viewport height */
-  width: 100vw;              /* full viewport width */
-  overflow: hidden;
-  position: relative;
-
-  /* escape container limits so it spans full screen */
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Optional overlay text */
-.hero-overlay {
-  position: absolute; inset: 0;
-  display: flex; align-items: flex-end; justify-content: flex-start;
-  padding: 2rem;
-  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.35));
-}
-.hero-overlay h1 {
-  margin: 0; font-weight: 600; letter-spacing: .2px;
-  color: #fff; /* or your accent color */
-}
-
-
-
