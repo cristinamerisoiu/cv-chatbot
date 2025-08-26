@@ -202,4 +202,40 @@ body {
   .msg .bubble { max-width: 88%; }
   .subtitle { display: none; }
 }
+/* ===== Hero Section (full-bleed half screen) ===== */
+html, body { height: 100%; margin: 0; }
+
+.hero {
+  height: 50vh;              /* half of viewport height */
+  width: 100vw;              /* full viewport width */
+  overflow: hidden;
+  position: relative;
+
+  /* escape container limits so it spans full screen */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Optional overlay text */
+.hero-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 2rem;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.35));
+}
+.hero-overlay h1 {
+  margin: 0; font-weight: 600; letter-spacing: .2px;
+  color: #fff; /* or your accent color */
+}
+
+
 
