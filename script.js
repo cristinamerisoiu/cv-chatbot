@@ -117,7 +117,7 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const reply = await askBackend(userMsg);
-    addMessage("CristinaBot", reply, 'bot');
+    addMessage("Cristina,Distilled", reply, 'bot');
   } catch (err) {
     addMessage("CristinaBot", "Oops — couldn’t reach the server. Is it running?", 'bot');
     console.error(err);
@@ -127,6 +127,7 @@ form.addEventListener("submit", async (e) => {
 // Optional: greet message
 addMessage("Work, skills, challenges, growth — let’s keep it real and to the point."
 );
+
 
 
 
