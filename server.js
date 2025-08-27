@@ -26,6 +26,30 @@ try {
   console.warn('No embeddings.json found. Running without CV memory.');
 }
 
+// ---------- Load interview clusters (personality Q&A) ----------
+let INTERVIEW = { items: [] };
+try {
+  const p2 = path.join(__dirname, 'interview.json');
+  INTERVIEW = JSON.parse(fs.readFileSync(p2, 'utf8'));
+  console.log(`Loaded interview bank with ${INTERVIEW.items.length} items`);
+} catch (e) {
+  console.warn('No interview.json found (personality Q&A disabled).');
+}
+
+function interviewAnswer(question) {
+  if (!INTERVIEW.items?.length) return null;
+  const q = (question || '').toLowerCase();
+  for (const item of INTERVIEW.items) {
+    const triggers = (item.triggers || []).map(t => t.toLowerCase().trim());
+    if (triggers.some(t => q.includes(t))) {
+      const pool = item.answers || [];
+      if (!pool.length) continue;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+  return null;
+}
+
 // ---------- Cosine similarity ----------
 function cosineSim(a, b) {
   let dot = 0, na = 0, nb = 0;
@@ -136,12 +160,12 @@ function smartBoundaryAndInterview(qLower) {
     return "Her contact details are provided in the original CV PDF you received.";
   }
 
-  // ----- New: Thinking / style / how she works (elegant prose, no bullets) -----
+  // ----- New: Thinking / style / how she works -----
   if (/\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(q)) {
     const opts = [
       "She thinks in systems: spot patterns fast, frame the problem cleanly, decide with evidence, and communicate the path forward in plain language.",
-      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before.",
-      "She connects dots faster than most realize, brings clarity where others stall, and navigates pressure with sharp wit and quiet precision."
+      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before.",
+      "She connects dots faster than most realize, brings clarity where others stall, and navigates pressure with sharp wit and quiet precision."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
@@ -149,7 +173,7 @@ function smartBoundaryAndInterview(qLower) {
   if (/\b(work\s+style|how\s+does\s+she\s+work|how\s+she\s+works|way\s+of\s+working|operating\s+style)\b/.test(q)) {
     const opts = [
       "She absorbs context fast, spots what actually matters, and moves from ambiguity to action before the room agrees what the problem is.",
-      "She mixes strategic focus with creative improvisation - balancing precision when it counts and speed when it’s needed."
+      "She mixes strategic focus with creative improvisation - balancing precision when it counts and speed when it’s needed."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
@@ -172,7 +196,7 @@ function smartBoundaryAndInterview(qLower) {
 
   if (/\b(what\s+is\s+she\s+like|who\s+is\s+she|describe\s+her|her\s+essence)\b/.test(q)) {
     const opts = [
-      "She’s the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn’t dare to. Wit like flint, focus when it counts, and a restlessness that doesn’t settle for ‘fine’. She turns systems into stories, stories into action, and action into results.",
+      "She’s the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn’t dare to. Wit like flint, focus when it counts, and a restlessness that doesn’t settle for ‘fine’. She turns systems into stories, stories into action, and action into results.",
       "Think strategic operator meets pattern disruptor. She thrives in ambiguity, doesn’t wait for permission, and doesn’t waste time. High-context, high-output, and with an amazing sense of humor."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
@@ -210,7 +234,6 @@ function enforceShort(text, maxWords = 90) {
 
 // Belt-and-suspenders: strip first-person if it ever slips
 function enforceThirdPerson(text) {
-  // crude but safe enough for our use-case; avoids touching inside words
   return text
     .replace(/\bI am\b/gi, 'She is')
     .replace(/\bI was\b/gi, 'She was')
@@ -243,9 +266,13 @@ app.post('/chat', async (req, res) => {
     const isCompany = COMPANY_TAGS.includes(desiredTag || '');
     const isSection = SECTION_TAGS.includes(desiredTag || '');
 
-    // 1) Overrides
+    // 1) Overrides (your existing custom replies)
     const override = smartBoundaryAndInterview(qLower);
     if (override) return res.json({ answer: override });
+
+    // 1.5) Interview clusters (your long-form Q&A from interview.json)
+    const canned = interviewAnswer(message);
+    if (canned) return res.json({ answer: canned });
 
     // 2) Embed
     const emb = await openai.embeddings.create({
@@ -276,7 +303,7 @@ app.post('/chat', async (req, res) => {
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
 
-    // 6) Variant (companies rotate bullets; sections will use FULL LIST instructions)
+    // 6) Variant
     const variant = pickVariant(message, isCompany);
 
     // 7) Persona prompt
@@ -288,12 +315,10 @@ app.post('/chat', async (req, res) => {
       "Avoid buzzwords and filler. Never use the word ‘chaos’.\n" +
       "Global length guideline: ~90 words max unless asked otherwise.";
 
-    // Scope rules
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
       : "For section questions (skills/tools/languages/education/certifications/early): Enumerate ALL relevant items from that section; do NOT omit items or summarize them away. Do NOT mention companies or tasks.";
 
-    // Section-specific instruction to keep full lists intact
     const sectionHint = isSection
       ? "Format lists cleanly (bullets or compact lines). Keep every item present in context verbatim or lightly paraphrased."
       : "";
@@ -302,7 +327,6 @@ app.post('/chat', async (req, res) => {
       ? "Style: structured list preferred; prioritize completeness over brevity for this answer."
       : `Style variant: ${variant.instructions}`;
 
-    // Slightly higher cap for section answers
     const maxWords = isSection ? 140 : 90;
 
     const userContent =
@@ -351,5 +375,3 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
