@@ -1,0 +1,260 @@
+{
+  "items": [
+    {
+      "id": "tmays_resume_walkthrough",
+      "triggers": ["walk me through", "resume", "résumé", "cv overview", "about herself", "about cristina", "profile summary", "career summary", "background", "tell me about yourself"],
+      "answers": [
+        "A career built on systems and structure. From early supply chain roots at Covestro to orchestrating partner onboarding at Cancom, then translating tech into client adoption at Ingram Micro, the pattern is clear: making complex operations run smoother. At gannaca now, the role blends strategy with hands-on execution—building AI-driven transformation services, owning automation, shaping go-to-market plans, and basically being the connective tissue between vision and execution.",
+        "The thread running through the career is turning messy, technical realities into workable systems. At Covestro, it started with supply chains—compliance, logistics, precision. At Cancom, it became about connecting partners into a digital ecosystem. At Ingram Micro, the focus was helping clients actually use the platforms they bought into, not just sign contracts. And now at gannaca, the role evolved into architecting transformation itself—designing the digital infrastructure, automating workflows, and bridging the gap between vision and execution so ideas don’t just sound good, they function in the real world."
+      ]
+    },
+
+    {
+      "id": "strengths",
+      "triggers": ["what are her strengths", "biggest strengths", "top strengths", "best at", "strength"],
+      "answers": [
+        "Systems thinking and execution at the same time—able to sketch the big picture and still build the nuts and bolts without stalling.",
+        "Acting as translator between visionary founders, technical engineers, and clients. Each speaks a different language; the skill is aligning them into one outcome."
+      ]
+    },
+    {
+      "id": "weakness",
+      "triggers": ["weakness", "weaknesses", "flaw", "improve", "working on"],
+      "answers": [
+        "Taking on too much solo—there’s a habit of owning every detail. Current work is trusting others to carry pieces of the system without stepping back in to redo them.",
+        "Sometimes speed wins over polish. Great for meeting deadlines, but the focus now is slowing down enough to refine thoroughly before shipping."
+      ]
+    },
+    {
+      "id": "why_role_company_industry",
+      "triggers": ["why this role", "why this company", "why this industry", "why interested", "motivation for role", "interest in industry"],
+      "answers": [
+        "Because transformation isn’t theory—it’s operations. The real shift happens when digital tools and strategy land in workflows people can actually use.",
+        "This industry forces constant learning. It doesn’t let you coast, and that’s the environment where growth and impact happen."
+      ]
+    },
+
+    {
+      "id": "proud_project",
+      "triggers": ["project proud", "most proud project", "proud of", "achievement", "biggest achievement"],
+      "answers": [
+        "Architecting gannaca’s AI-driven transformation service—building the tech stack, designing automation, and turning a concept into a working service from scratch.",
+        "At Cancom, structuring partner onboarding flows that held up under pressure: from API setup to integration to documentation. It streamlined the entire partner ecosystem and reduced constant friction."
+      ]
+    },
+    {
+      "id": "difficult_problem",
+      "triggers": ["difficult problem", "hard problem", "challenge solved", "solve a difficult problem", "tough problem"],
+      "answers": [
+        "At Cancom, wrangling edge-case onboarding where APIs crashed, sales overpromised, and devs refused to bend. As ops, stood in the middle, built a process that actually worked, and held the line on what was realistic without losing the client.",
+        "At gannaca, projects often meant transforming vague visionary goals into systems that could actually run. One challenge: translating a founder’s “future-of-work” idea into a real service framework with automation, tech stack, and clear workflows. It demanded cutting through ambiguity, aligning stakeholders, and proving transformation doesn’t live in pitch decks—it lives in working processes."
+      ]
+    },
+    {
+      "id": "learn_fast",
+      "triggers": ["learn quickly", "learn fast", "had to learn", "pick up quickly", "ramp up"],
+      "answers": [
+        "Jumping into EMEA onboarding at Ingram Micro meant every client brought their own mess of systems and expectations. Had to absorb the platform’s technical limits in real time and still deliver smooth integration.",
+        "The web development bootcamp in 2019—crash course from zero to basics of HTML, CSS, and JS. Never became a developer, but it massively sharpened communication with technical teams. Suddenly, when devs said something couldn’t be done, it was possible to challenge or adapt intelligently instead of nodding blindly."
+      ]
+    },
+    {
+      "id": "biggest_impact",
+      "triggers": ["biggest impact", "impact made", "most impact", "largest impact"],
+      "answers": [
+        "At gannaca, built the operational backbone for an AI-driven transformation service. Instead of strategy staying abstract, it became something tangible—systems, automation, and actual deliverables.",
+        "At Covestro, managed compliance-heavy international orders under tight deadlines, often for automotive clients whose production lines depended on flawless timing. Every slip could halt assembly lines. Keeping those orders flowing wasn’t glamorous, but the stakes were massive—client trust and operational continuity across Europe."
+      ]
+    },
+
+    {
+      "id": "difficult_teammate_client",
+      "triggers": ["difficult teammate", "difficult client", "work with difficult", "conflict with teammate", "conflict with client"],
+      "answers": [
+        "Clients at Ingram Micro often expected the platform to magically meet every business goal. Navigated this by designing workflows that met the essence of their needs without overselling what the tech could deliver.",
+        "Internal clash at Cancom between sales and ops—sales promised delivery speeds the ops team couldn’t meet, while devs resisted changing timelines. As ops, became the bridge among all three, translating limits clearly while negotiating compromises. Built a middle ground where promises were realistic, devs weren’t burned out, and clients still felt valued."
+      ]
+    },
+    {
+      "id": "feedback_criticism",
+      "triggers": ["feedback", "criticism", "handle feedback", "handle criticism", "receive feedback"],
+      "answers": [
+        "Filter it. Useful parts get applied right away; the rest is parked and ignored.",
+        "Push for specifics. Vague “do better” feedback gets no one anywhere - clarity turns it into action."
+      ]
+    },
+    {
+      "id": "disagree_manager",
+      "triggers": ["disagree with manager", "disagreed with manager", "conflict with manager", "push back manager"],
+      "answers": [
+        "At gannaca, the founder pushed for everything “now.” Reality said otherwise. Answer: phased timelines that kept momentum but avoided burnout.",
+        "At Covestro, clients wanted to cut corners on compliance to speed up. Pushed back—better to absorb tension early than face fallout later."
+      ]
+    },
+    {
+      "id": "team_role",
+      "triggers": ["team role", "role in a team", "in a team setting", "team setting"],
+      "answers": [
+        "Cristina sees herself as The architect - laying out the workflow so chaos doesn’t win.",
+        "She sees herself as The translator - making sure ops, sales, and devs actually understand one another."
+      ]
+    },
+
+    {
+      "id": "tight_deadline",
+      "triggers": ["tight deadline", "under a deadline", "time pressure", "work under pressure"],
+      "answers": [
+        "At gannaca, the website relaunch under compressed timelines - juggled UX, SEO, and technical builds without breaking launch day.",
+        "At Covestro, automotive clients needed parts on time or their production lines stopped. Coordinated logistics, compliance, and customer needs under strict legal deadlines - failure wasn’t an option."
+      ]
+    },
+    {
+      "id": "prioritization",
+      "triggers": ["prioritize", "prioritise", "everything urgent", "prioritization", "manage priorities"],
+      "answers": [
+        "Start with the brutal question: what breaks if it doesn’t get done today? That instantly sets the order.",
+        "Then map out leverage - what tasks, if finished, unlock five more? That way, not every “urgent” task is treated equally. Urgency isn’t just loud voices; it’s about system impact."
+      ]
+    },
+    {
+      "id": "biggest_mistake",
+      "triggers": ["biggest mistake", "mistake you made", "error made", "failure and learned"],
+      "answers": [
+        "At Covestro, underestimated compliance requirements early on. Corrected it fast, documented the fix, and built in checks to prevent repeats.",
+        "At gannaca, automated a flawed process too soon. Rolled it back, fixed the base, and then re-automated properly."
+      ]
+    },
+    {
+      "id": "motivation_tough_times",
+      "triggers": ["motivates", "motivation", "tough times", "when things get tough", "what keeps you going"],
+      "answers": [
+        "That moment when puzzles finally folds into order. When the workflows connect, the automation runs, and the system clicks into place—that’s fuel.",
+        "Curiosity plays a big role. Tough moments are often challenges in disguise. Untangling them is more satisfying than the easy wins, because the payoff isn’t just finishing a task—it’s leaving behind a stronger system for next time."
+      ]
+    },
+
+    {
+      "id": "work_environment",
+      "triggers": ["work environment", "environment thrive", "best environment", "culture thrive"],
+      "answers": [
+        "Autonomy paired with clarity-being trusted to build, but with a clear north star so energy doesn’t scatter.",
+        "A culture where experimentation is normal, not punished. The freedom to try, adjust, and move forward beats endless “alignment” sessions that never ship anything."
+      ]
+    },
+    {
+      "id": "stay_up_to_date",
+      "triggers": ["stay up to date", "trends", "keep current", "how stay current"],
+      "answers": [
+        "Hands-on trial with AI, automation, and outreach tools. Reading about trends is fine, but building prototypes with them is how they really stick.",
+        "By watching what peers actually adopt, not just what gets hyped. Trends worth keeping are the ones that survive real-world use."
+      ]
+    },
+    {
+      "id": "independent_vs_collaboration",
+      "triggers": ["independent work", "collaboration", "balance independent", "work alone vs team"],
+      "answers": [
+        "Build independently, then bring it into the team for pressure testing. That balance ensures quality without groupthink.",
+        "Collaboration works best as checkpoints-not a daily crutch. Align, test, adjust, then go back into focused execution."
+      ]
+    },
+    {
+      "id": "taught_yourself",
+      "triggers": ["taught yourself", "recently learned", "new thing you learned", "self taught"],
+      "answers": [
+        "Avatar tech with HeyGen—turning static team presence into dynamic digital identity, useful for brand representation.",
+        "Deepening SEO/UX integration on the gannaca website-understanding how content structure shapes visibility and user flow at the same time."
+      ]
+    },
+
+    {
+      "id": "five_years",
+      "triggers": ["five years", "5 years", "where do you see yourself", "future in five"],
+      "answers": [
+        "Running large-scale transformation programs where systems design becomes the strategic lever itself.",
+        "Building an operations lab-testing prototypes of future workflows in real time, not waiting for theory to catch up."
+      ]
+    },
+    {
+      "id": "career_goals",
+      "triggers": ["career goals", "career objective", "long term goals", "next steps career"],
+      "answers": [
+        "Keep sharpening the role of systems builder-always bridging vision with execution.",
+        "Evolve toward strategic leadership while keeping execution in muscle memory."
+      ]
+    },
+    {
+      "id": "unlimited_resources_project",
+      "triggers": ["unlimited resources", "million dollars", "start a company", "project tomorrow"],
+      "answers": [
+        "A real-time organizational dashboard that blends AI, data, and culture-showing exactly how healthy a company is and what to fix.",
+        "A platform for SMEs with plug-and-play automations, prebuilt integrations, and AI support—enterprise-grade tools without the enterprise cost."
+      ]
+    },
+    {
+      "id": "skill_next_year",
+      "triggers": ["skill develop", "next year skill", "learn next year", "new skill"],
+      "answers": [
+        "Advanced analytics-shifting from descriptive ops reports to predictive modeling.",
+        "Stronger stakeholder navigation. Systems are easy compared to politics, and mastering both is the real advantage."
+      ]
+    },
+
+    {
+      "id": "curveball_animal",
+      "triggers": ["animal would you be", "animal and why", "which animal"],
+      "answers": [
+        "Octopus-multi-armed, adaptive, thrives in complexity.",
+        "Border collie-constantly scanning the system, herding chaos into order."
+      ]
+    },
+    {
+      "id": "curveball_teach_something",
+      "triggers": ["teach me something", "teach me in two minutes", "teach something new"],
+      "answers": [
+        "A process is broken if it takes longer to explain than to execute.",
+        "Every bottleneck costs three times more downstream than it does at the point it appears."
+      ]
+    },
+    {
+      "id": "curveball_million_dollars",
+      "triggers": ["million dollars", "start a company with a million", "1,000,000"],
+      "answers": [
+        "Ops-in-a-box for SMEs—ready-made automations, docs, and AI assistants.",
+        "A marketplace of “translators”-operators who can bridge founders, engineers, and clients."
+      ]
+    },
+    {
+      "id": "last_book_article",
+      "triggers": ["last book", "last article", "made you think", "inspired reading"],
+      "answers": [
+        "A deep dive into how brain-computer interfaces are leaving the lab. The piece reframed the workplace future—showing how tech isn’t just a tool anymore, it’s shaping how humans define work, decision-making, and even embodiment.",
+        "An article on how technology is redesigning work culture itself. Less about gadgets, more about the subtle rewiring of roles, expectations, and what “productivity” will mean."
+      ]
+    },
+
+    {
+      "id": "why_hire",
+      "triggers": ["why should we hire", "hire her", "why hire her", "why hire"],
+      "answers": [
+        "Because the track record isn’t theory—systems have been built, scaled, and proven across industries. Each role left something stronger than before.",
+        "Because there aren’t many who can translate visionary strategy into executable systems while keeping everyone—sales, ops, and devs—aligned and motivated."
+      ]
+    },
+    {
+      "id": "what_sets_apart",
+      "triggers": ["sets apart", "different from other candidates", "unique", "stand out"],
+      "answers": [
+        "The ability to sit at the intersection of strategy, tech, and operations—and move fluidly across all three without losing speed.",
+        "A history of making other people’s bold ideas not just possible, but functional and sustainable."
+      ]
+    },
+    {
+      "id": "questions_for_us",
+      "triggers": ["questions for us", "any questions for us", "what questions do you have"],
+      "answers": [
+        "What’s broken here that needs fixing yesterday? That’s the real scope of the role.",
+        "Six months from now, how do you measure success for this position? Knowing that gives clarity on what matters most."
+      ]
+    }
+  ]
+}
