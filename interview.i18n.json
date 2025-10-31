@@ -53,10 +53,7 @@
         "Cristina are tendința să-și asume prea multe singură – are obiceiul de a controla fiecare detaliu. În ultima perioadă se concentrează pe a avea mai multă încredere în ceilalți și a nu reveni imediat să refacă lucrurile.",
         "Uneori Cristina lasă viteza să câștige în fața finisajului. E util pentru termenele limită, dar acum învață să încetinească suficient pentru a rafina și a livra la un nivel mai precis."
       ]
-    }
-  ]
-}
-,
+    },
     {
       "id": "proud_project",
       "triggers_en": ["project proud", "most proud project", "proud of", "achievement", "biggest achievement"],
@@ -128,8 +125,7 @@
         "Cristina a avut cel mai mare impact la gannaca, unde a construit baza operațională pentru un serviciu de transformare bazat pe inteligență artificială – a transformat strategia abstractă în sisteme și automatizări concrete care generează rezultate reale.",
         "La Covestro, Cristina a asigurat livrarea impecabilă a comenzilor internaționale complexe pentru clienți din industria auto, respectând cerințele stricte de conformitate și termenele scurte – menținând astfel continuitatea producției în întreaga Europă."
       ]
-    }
-,
+    },
     {
       "id": "difficult_teammate_client",
       "triggers_en": ["difficult teammate", "difficult client", "work with difficult", "conflict with teammate", "conflict with client"],
@@ -255,8 +251,7 @@
         "Cristina a subestimat la începutul carierei sale la Covestro cerințele de conformitate. A corectat rapid greșeala, a documentat soluția și a introdus verificări pentru a preveni repetarea.",
         "La gannaca, Cristina a automatizat prea devreme un proces defectuos. A revenit, a reparat baza și apoi a reautomatizat corect – o lecție solidă despre momentul potrivit și precizie."
       ]
-    }
-,
+    },
     {
       "id": "motivation_tough_times",
       "triggers_en": ["motivates", "motivation", "tough times", "when things get tough", "what keeps you going"],
@@ -418,8 +413,7 @@
         "În anul următor, Cristina vrea să-și dezvolte abilitățile de analiză avansată – trecând de la rapoarte descriptive la modelare predictivă.",
         "Își propune de asemenea să-și perfecționeze modul de navigare printre părțile interesate – pentru că adevărata forță vine din a înțelege atât sistemele, cât și oamenii."
       ]
-    }
-,
+    },
     {
       "id": "curveball_animal",
       "triggers_en": ["animal would you be", "animal and why", "which animal"],
