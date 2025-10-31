@@ -1,21 +1,19 @@
-
 // server.js — strict scope, third-person only, full lists for skills/tools/languages
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const app = express();
 const port = process.env.PORT || 3000;
-
 app.use(cors());
 app.use(bodyParser.json());
+
+// NEW: Serve static files (HTML/JS/CSS) from root
+app.use(express.static(__dirname));
 
 // ---------- Load embeddings ----------
 let KB = [];
@@ -26,7 +24,6 @@ try {
 } catch (e) {
   console.warn('No embeddings.json found. Running without CV memory.');
 }
-
 // ---------- Load multilingual interview ----------
 let INTERVIEW = { clusters: [] };
 try {
@@ -36,7 +33,6 @@ try {
 } catch {
   console.warn('No interview.i18n.json found.');
 }
-
 // ---------- Normalization helpers (diacritic-insensitive, lowercase) ----------
 function normalize(s = '') {
   return s
@@ -46,30 +42,22 @@ function normalize(s = '') {
     .replace(/\s+/g, ' ')
     .trim();
 }
-
 // ---------- Better language guess (no API; robust to missing diacritics) ----------
 function guessLang(text = '') {
   const t = normalize(text);
-
   if (/[äöüß]/i.test(text)) return 'de';
   if (/[ăâîșşţțșț]/i.test(text)) return 'ro';
-
   if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|faehigkeiten|werkzeuge)\b/.test(t)) return 'de';
   if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|munca|abilitati|fluxuri)\b/.test(t)) return 'ro';
-
   return 'en';
 }
-
 // ---------- Interview answer (i18n, diacritic-insensitive) ----------
 function interviewAnswer(question) {
   if (!INTERVIEW.clusters?.length) return null;
-
   const qNorm = normalize(question);
   const lang = guessLang(qNorm);
-
   const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
-  const ansKey  = lang === 'de' ? 'answers_de'  : lang === 'ro' ? 'answers_ro'  : 'answers_en';
-
+  const ansKey = lang === 'de' ? 'answers_de' : lang === 'ro' ? 'answers_ro' : 'answers_en';
   for (const c of INTERVIEW.clusters) {
     const triggers = (c[trigKey] || []).map(normalize);
     if (triggers.some(t => t && qNorm.includes(t))) {
@@ -77,7 +65,6 @@ function interviewAnswer(question) {
       if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
     }
   }
-
   for (const c of INTERVIEW.clusters) {
     const enTriggers = (c.triggers_en || []).map(normalize);
     if (enTriggers.some(t => t && qNorm.includes(t))) {
@@ -85,19 +72,15 @@ function interviewAnswer(question) {
       if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
     }
   }
-
   return null;
 }
-
 // ---------- Interview answer (i18n) ----------
 function interviewAnswer(question) {
   if (!INTERVIEW.clusters?.length) return null;
   const q = (question || '').toLowerCase();
   const lang = guessLang(q);
-
   const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
-  const ansKey  = lang === 'de' ? 'answers_de'  : lang === 'ro' ? 'answers_ro'  : 'answers_en';
-
+  const ansKey = lang === 'de' ? 'answers_de' : lang === 'ro' ? 'answers_ro' : 'answers_en';
   for (const item of INTERVIEW.clusters) {
     const triggers = (item[trigKey] || []).map(t => (t || '').toLowerCase().trim());
     if (triggers.some(t => t && q.includes(t))) {
@@ -107,8 +90,6 @@ function interviewAnswer(question) {
   }
   return null;
 }
-
-
 // ---------- Cosine similarity ----------
 function cosineSim(a, b) {
   let dot = 0, na = 0, nb = 0;
@@ -120,12 +101,10 @@ function cosineSim(a, b) {
   const denom = Math.sqrt(na) * Math.sqrt(nb) || 1e-9;
   return dot / denom;
 }
-
 // ---------- Tag detection ----------
 const COMPANY_TAGS = ['gannaca', 'ingram', 'cancom', 'covestro'];
 const SECTION_TAGS = ['education','skills','tools','languages','certifications','early'];
 const ALL_TAGS = [...COMPANY_TAGS, ...SECTION_TAGS];
-
 function detectTag(qLower) {
   if (/\bgannaca\b/.test(qLower)) return 'gannaca';
   if (/\bingram\b/.test(qLower)) return 'ingram';
@@ -139,11 +118,9 @@ function detectTag(qLower) {
   if (/\bcertifications?\b|\btraining\b|\bcourses?\b/.test(qLower)) return 'certifications';
   return null;
 }
-
 // ---------- Smart boundaries + interview (rotating) ----------
 function smartBoundaryAndInterview(qLower) {
   const q = qLower.replace(/[?.!]/g, ' ').trim();
-
   // ----- Personal boundaries (with word-boundary regex for 'age') -----
   if (/\bhow\s+old\b/.test(q) || /\b(age|years\s+old)\b/.test(q)) {
     const opts = [
@@ -169,7 +146,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   // ----- Interview-style themes (existing) -----
   if (/\bstrengths?\b/.test(q)) {
     const opts = [
@@ -195,7 +171,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   // ----- New: Should we hire her? / Salary -----
   if (/\b(should\s+we\s+hire|hire\s+her)\b/.test(q)) {
     const opts = [
@@ -213,12 +188,10 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   // ----- New: Contact details -----
   if (/\b(contact|email|phone)\b/.test(q)) {
     return "Her contact details are provided in the original CV PDF you received.";
   }
-
   // ----- New: Thinking / style / how she works -----
   if (/\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(q)) {
     const opts = [
@@ -228,7 +201,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   if (/\b(work\s+style|how\s+does\s+she\s+work|how\s+she\s+works|way\s+of\s+working|operating\s+style)\b/.test(q)) {
     const opts = [
       "She absorbs context fast, spots what actually matters, and moves from ambiguity to action before the room agrees what the problem is.",
@@ -236,7 +208,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   if (/\b(communication\s+style|how\s+she\s+communicates|communicator)\b/.test(q)) {
     const opts = [
       "She communicates with intent: every word serves a purpose. Whether she's crafting strategy or giving feedback, her style is direct, smart, and tuned to the audience - always clear, never performative.",
@@ -244,7 +215,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   if (/\b(decision\s+making|decision\-making|how\s+she\s+decides|decision\s+style)\b/.test(q)) {
     const opts = [
       "She makes fast, informed decisions when speed matters - and slows down when precision is required. She combines instinct with analysis, never defaulting to autopilot.",
@@ -252,7 +222,6 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   if (/\b(what\s+is\s+she\s+like|who\s+is\s+she|describe\s+her|her\s+essence)\b/.test(q)) {
     const opts = [
       "She’s the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn’t dare to. Wit like flint, focus when it counts, and a restlessness that doesn’t settle for ‘fine’. She turns systems into stories, stories into action, and action into results.",
@@ -260,19 +229,15 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-
   return null;
 }
-
-
 // ---------- Variants ----------
 const VARIANTS = [
-  { id: 'bullets3',      instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
+  { id: 'bullets3', instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
   { id: 'impactBullets', instructions: 'Provide 2 action bullets + 1 outcome bullet. Max 16 words each.' },
-  { id: 'twoSentences',  instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
-  { id: 'shortPara',     instructions: 'One short paragraph, 2–3 sentences with strong verbs; avoid filler.' }
+  { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
+  { id: 'shortPara', instructions: 'One short paragraph, 2–3 sentences with strong verbs; avoid filler.' }
 ];
-
 const rrMap = new Map();
 function pickVariant(question, preferBullets) {
   const pool = preferBullets
@@ -283,14 +248,12 @@ function pickVariant(question, preferBullets) {
   rrMap.set(key, n);
   return pool[(n - 1) % pool.length];
 }
-
 // Hard cap with a bit more room for section lists
 function enforceShort(text, maxWords = 90) {
   const words = text.trim().split(/\s+/);
   if (words.length <= maxWords) return text.trim();
   return words.slice(0, maxWords).join(' ') + '…';
 }
-
 // Belt-and-suspenders: strip first-person if it ever slips
 function enforceThirdPerson(text) {
   return text
@@ -302,16 +265,16 @@ function enforceThirdPerson(text) {
     .replace(/\bmy\b/gi, 'her')
     .replace(/\bme\b/gi, 'her');
 }
-
 // ---------- Health ----------
-app.get('/', (_, res) => res.send('OK: server up'));
+app.get('/', (req, res) => {
+  // UPDATED: Serve index.html on root for chatbot UI
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 app.get('/ping', (_, res) => res.json({ ok: true, chunks: KB.length }));
-
 // ---------- Chat ----------
 app.post('/chat', async (req, res) => {
   const { message } = req.body || {};
   const debug = req.query.debug === 'true';
-
   try {
     if (!message || !message.trim()) {
       return res.json({ answer: "Please ask a question." });
@@ -319,27 +282,22 @@ app.post('/chat', async (req, res) => {
     if (!KB.length) {
       return res.json({ answer: "I don't have Cristina’s CV context loaded yet." });
     }
-
     const qLower = message.toLowerCase();
     const desiredTag = detectTag(qLower);
     const isCompany = COMPANY_TAGS.includes(desiredTag || '');
     const isSection = SECTION_TAGS.includes(desiredTag || '');
-
     // 1) Overrides (your existing custom replies)
     const override = smartBoundaryAndInterview(qLower);
     if (override) return res.json({ answer: override });
-
     // 1.5) Interview clusters (your long-form Q&A from interview.json)
     const canned = interviewAnswer(message);
     if (canned) return res.json({ answer: canned });
-
     // 2) Embed
     const emb = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
     });
     const qemb = emb.data[0].embedding;
-
     // 3) Score
     const allScored = KB.map(it => ({
       id: it.id,
@@ -347,7 +305,6 @@ app.post('/chat', async (req, res) => {
       text: it.text,
       score: cosineSim(qemb, it.embedding),
     }));
-
     // 4) Strict scope
     let pool = allScored;
     if (desiredTag) {
@@ -357,14 +314,11 @@ app.post('/chat', async (req, res) => {
         return res.json(debug ? { answer: polite, used_chunks: [] } : { answer: polite });
       }
     }
-
     // 5) Top-3
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
-
     // 6) Variant
     const variant = pickVariant(message, isCompany);
-
     // 7) Persona prompt
     const personaSystem =
       "You are presenting Cristina Merisoiu’s professional CV as a chatbot for recruiters.\n" +
@@ -373,27 +327,21 @@ app.post('/chat', async (req, res) => {
       "Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.\n" +
       "Avoid buzzwords and filler. Never use the word ‘chaos’.\n" +
       "Global length guideline: ~90 words max unless asked otherwise.";
-
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
       : "For section questions (skills/tools/languages/education/certifications/early): Enumerate ALL relevant items from that section; do NOT omit items or summarize them away. Do NOT mention companies or tasks.";
-
     const sectionHint = isSection
       ? "Format lists cleanly (bullets or compact lines). Keep every item present in context verbatim or lightly paraphrased."
       : "";
-
     const styleHint = isSection
       ? "Style: structured list preferred; prioritize completeness over brevity for this answer."
       : `Style variant: ${variant.instructions}`;
-
     const maxWords = isSection ? 140 : 90;
-
     const userContent =
       (contextBlocks.length
         ? `CONTEXT (top matches):\n${contextBlocks.join('\n\n')}\n\n`
         : 'CONTEXT:\n(none)\n\n') +
       `QUESTION: ${message}\n\n${scopeRules}\n${sectionHint}\n${styleHint}`;
-
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
@@ -403,11 +351,9 @@ app.post('/chat', async (req, res) => {
       temperature: isCompany ? 0.5 : 0.6,
       max_tokens: 260
     });
-
     let reply = completion.choices?.[0]?.message?.content || 'No reply.';
     reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina');
     reply = enforceShort(enforceThirdPerson(reply), maxWords);
-
     if (debug) {
       return res.json({
         answer: reply,
@@ -430,10 +376,6 @@ app.post('/chat', async (req, res) => {
     });
   }
 });
-
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
-
