@@ -1,3 +1,4 @@
+
 // server.js — strict scope, third-person only, full lists for skills/tools/languages
 
 const express = require('express');
@@ -29,7 +30,7 @@ try {
 // ---------- Load multilingual interview ----------
 let INTERVIEW = { clusters: [] };
 try {
-  const p = path.join(__dirname, 'interview.i18n.json');
+  const p = path.resolve(process.cwd(), 'interview.i18n.json');
   INTERVIEW = JSON.parse(fs.readFileSync(p, 'utf8'));
   console.log(`Loaded interview bank (${INTERVIEW.clusters.length} clusters)`);
 } catch {
@@ -433,5 +434,6 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
