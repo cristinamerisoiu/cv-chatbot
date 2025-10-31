@@ -1,1 +1,550 @@
-
+{
+  "clusters": [
+    {
+      "id": "tmays_resume_walkthrough",
+      "triggers_en": ["walk me through", "resume", "cv overview", "about herself", "about cristina", "profile summary", "career summary", "background", "tell me about yourself"],
+      "triggers_de": ["führ mich durch ihren lebenslauf", "lebenslauf", "über cristina", "profil zusammenfassung", "karriere überblick", "hintergrund", "erzähl mir von ihr"],
+      "triggers_ro": ["prezintă-mi parcursul", "rezumat cv", "despre cristina", "profil profesional", "rezumat carieră", "spune-mi despre ea"],
+      "answers_en": [
+        "Cristina’s career is built on systems and structure. From early supply chain roots at Covestro to orchestrating partner onboarding at Cancom, then translating tech into client adoption at Ingram Micro, she consistently makes complex operations run smoother. At gannaca, she blends strategy with hands-on execution—building AI-driven transformation services, owning automation, shaping go-to-market plans, and acting as the connective tissue between vision and delivery.",
+        "Cristina has a consistent pattern of turning messy technical realities into workable systems. At Covestro it began with supply chains—compliance, logistics, precision. At Cancom she connected partners into a digital ecosystem. At Ingram Micro she focused on helping clients actually use the platforms they bought. And now at gannaca, she architects transformation itself—designing the digital infrastructure, automating workflows, and making sure ideas don’t just sound good, they work in the real world."
+      ],
+      "answers_de": [
+        "Cristinas Laufbahn baut auf Systemen und Struktur. Von ihren Supply-Chain-Wurzeln bei Covestro über das Partner-Onboarding bei Cancom bis zur Kundenadaption bei Ingram Micro sorgt sie konsequent dafür, dass komplexe Abläufe reibungsloser funktionieren. Bei gannaca verbindet sie Strategie und praktische Umsetzung – sie baut KI-gestützte Transformationsservices, verantwortet Automatisierung, gestaltet Go-to-Market-Pläne und ist das verbindende Element zwischen Vision und Umsetzung.",
+        "Cristina zeigt durchweg ein Muster: sie verwandelt unklare technische Realitäten in funktionierende Systeme. Bei Covestro begann es mit Lieferketten – Compliance, Logistik, Präzision. Bei Cancom vernetzte sie Partner in einem digitalen Ökosystem. Bei Ingram Micro half sie Kunden, Plattformen wirklich zu nutzen. Heute bei gannaca gestaltet sie Transformation selbst – sie entwirft digitale Infrastruktur, automatisiert Workflows und sorgt dafür, dass Ideen praktisch funktionieren."
+      ],
+      "answers_ro": [
+        "Cariera Cristinei este construită pe sisteme și structură. De la rădăcinile din lanțul de aprovizionare la Covestro, la coordonarea onboarding-ului partenerilor la Cancom și până la transformarea tehnologiei în adoptare reală la Ingram Micro, ea face ca operațiunile complexe să funcționeze mai lin. La gannaca îmbină strategia cu execuția practică – dezvoltă servicii de transformare bazate pe inteligență artificială, gestionează automatizarea, definește planurile go-to-market și devine elementul de legătură între viziune și implementare.",
+        "Cristina are un tipar constant: transformă realitățile tehnice dezordonate în sisteme funcționale. La Covestro a început cu lanțurile de aprovizionare – conformitate, logistică, precizie. La Cancom a conectat partenerii într-un ecosistem digital. La Ingram Micro s-a concentrat pe a-i ajuta pe clienți să folosească efectiv platformele achiziționate. Iar acum, la gannaca, proiectează însăși transformarea – concepe infrastructura digitală, automatizează fluxurile și se asigură că ideile nu rămân doar teoretice, ci funcționează în realitate."
+      ]
+    },
+    {
+      "id": "strengths",
+      "triggers_en": ["what are her strengths", "biggest strengths", "top strengths", "best at", "strength"],
+      "triggers_de": ["was sind ihre stärken", "größte stärken", "worin ist sie am besten"],
+      "triggers_ro": ["care sunt punctele ei tari", "cele mai mari puncte tari", "în ce este cea mai bună"],
+      "answers_en": [
+        "Cristina’s main strength is systems thinking combined with flawless execution—she can see the whole picture and still manage the smallest details without losing momentum.",
+        "Cristina is also strong at translating between visionary founders, technical engineers, and clients—aligning everyone toward one shared outcome."
+      ],
+      "answers_de": [
+        "Cristinas größte Stärke ist ihr systemisches Denken in Kombination mit präziser Umsetzung – sie sieht das große Ganze und behält gleichzeitig die Details im Griff, ohne an Tempo zu verlieren.",
+        "Cristina ist außerdem stark darin, zwischen visionären Gründern, technischen Entwicklern und Kunden zu vermitteln – sie richtet alle auf ein gemeinsames Ziel aus."
+      ],
+      "answers_ro": [
+        "Punctul principal forte al Cristinei este gândirea sistemică combinată cu execuția impecabilă – vede imaginea de ansamblu și gestionează în același timp cele mai mici detalii fără să piardă ritmul.",
+        "Cristina este de asemenea foarte bună la a traduce între fondatori vizionari, ingineri tehnici și clienți – reușește să-i alinieze pe toți către același scop."
+      ]
+    },
+    {
+      "id": "weakness",
+      "triggers_en": ["weakness", "weaknesses", "flaw", "improve", "working on"],
+      "triggers_de": ["schwäche", "schwächen", "verbessern", "daran arbeitet"],
+      "triggers_ro": ["punct slab", "puncte slabe", "ce îmbunătățește", "la ce lucrează să devină mai bună"],
+      "answers_en": [
+        "Cristina tends to take on too much herself—she has a habit of owning every detail. Lately she’s been focusing on trusting others to carry parts of the system without stepping in to redo them.",
+        "Cristina sometimes lets speed win over polish. It helps with deadlines, but she’s learning to slow down enough to refine and deliver at a higher level of precision."
+      ],
+      "answers_de": [
+        "Cristina neigt dazu, zu viel selbst zu übernehmen – sie hat die Angewohnheit, jedes Detail zu kontrollieren. In letzter Zeit konzentriert sie sich darauf, anderen mehr Verantwortung zu überlassen und nicht gleich einzugreifen, um Dinge zu überarbeiten.",
+        "Manchmal lässt Cristina die Geschwindigkeit vor Perfektion gehen. Das hilft bei Deadlines, aber sie lernt, sich genügend Zeit für den Feinschliff zu nehmen, um noch präziser zu liefern."
+      ],
+      "answers_ro": [
+        "Cristina are tendința să-și asume prea multe singură – are obiceiul de a controla fiecare detaliu. În ultima perioadă se concentrează pe a avea mai multă încredere în ceilalți și a nu reveni imediat să refacă lucrurile.",
+        "Uneori Cristina lasă viteza să câștige în fața finisajului. E util pentru termenele limită, dar acum învață să încetinească suficient pentru a rafina și a livra la un nivel mai precis."
+      ]
+    }
+  ]
+}
+,
+    {
+      "id": "proud_project",
+      "triggers_en": ["project proud", "most proud project", "proud of", "achievement", "biggest achievement"],
+      "triggers_de": ["stolz auf projekt", "größter erfolg", "worauf ist sie stolz", "erfolg", "projekt auf das sie stolz ist"],
+      "triggers_ro": ["proiect de care e mândră", "cea mai mare realizare", "realizare importantă", "de ce e mândră"],
+      "answers_en": [
+        "Cristina is most proud of architecting gannaca’s AI-driven transformation service—building the entire tech stack, designing automation, and turning a concept into a fully working service from scratch.",
+        "Cristina is also proud of her work at Cancom, where she structured partner-onboarding flows that held up under pressure—from API setup through integration to documentation. It streamlined the entire partner ecosystem and removed constant friction."
+      ],
+      "answers_de": [
+        "Cristina ist besonders stolz darauf, den KI-gestützten Transformationsservice von gannaca aufgebaut zu haben – sie entwickelte den gesamten Tech-Stack, entwarf die Automatisierung und machte aus einem Konzept einen funktionierenden Service von Grund auf.",
+        "Cristina ist auch stolz auf ihre Arbeit bei Cancom, wo sie das Partner-Onboarding so strukturierte, dass es selbst unter Druck stabil blieb – von der API-Einrichtung über die Integration bis hin zur Dokumentation. Dadurch wurde das gesamte Partnerökosystem effizienter und Reibungen verringerten sich deutlich."
+      ],
+      "answers_ro": [
+        "Cristina este cel mai mândră că a proiectat serviciul de transformare bazat pe inteligență artificială al gannaca – a construit întregul sistem tehnic, a gândit automatizarea și a transformat un concept într-un serviciu complet funcțional de la zero.",
+        "Cristina este de asemenea mândră de munca ei la Cancom, unde a structurat fluxurile de onboarding ale partenerilor astfel încât să reziste presiunii – de la configurarea API-urilor până la integrare și documentație. A optimizat întregul ecosistem de parteneri și a eliminat fricțiunile constante."
+      ]
+    },
+    {
+      "id": "difficult_problem",
+      "triggers_en": ["difficult problem", "hard problem", "challenge solved", "solve a difficult problem", "tough problem"],
+      "triggers_de": ["schwieriges problem", "große herausforderung", "kompliziertes problem", "problem gelöst"],
+      "triggers_ro": ["problemă dificilă", "provocare rezolvată", "situație complicată"],
+      "answers_en": [
+        "Cristina once solved a tough onboarding problem at Cancom where APIs crashed, sales over-promised, and developers refused to compromise. She built a realistic process that actually worked and kept the client satisfied.",
+        "At gannaca, Cristina faced the challenge of turning a founder’s vague ‘future-of-work’ idea into a real, operational service—complete with automation, a defined tech stack, and clear workflows that transformed vision into action."
+      ],
+      "answers_de": [
+        "Cristina hat einmal bei Cancom ein schwieriges Onboarding-Problem gelöst, bei dem APIs abstürzten, Sales zu viel versprach und Entwickler keine Kompromisse eingehen wollten. Sie entwickelte einen realistischen Prozess, der funktionierte und den Kunden behielt.",
+        "Bei gannaca stand Cristina vor der Herausforderung, eine vage ‘Future-of-Work’-Vision des Gründers in einen echten, operativen Service zu übersetzen – mit Automatisierung, definiertem Tech-Stack und klaren Workflows, die Vision in Umsetzung verwandelten."
+      ],
+      "answers_ro": [
+        "Cristina a rezolvat o situație dificilă de onboarding la Cancom, unde API-urile cedau, echipa de vânzări promitea prea mult, iar dezvoltatorii refuzau compromisurile. A creat un proces realist care chiar a funcționat și a menținut clientul mulțumit.",
+        "La gannaca, Cristina s-a confruntat cu provocarea de a transforma ideea vagă a fondatorului despre ‘viitorul muncii’ într-un serviciu operațional real – cu automatizare, infrastructură tehnologică clară și fluxuri definite care au transformat viziunea în acțiune."
+      ]
+    },
+    {
+      "id": "learn_fast",
+      "triggers_en": ["learn quickly", "learn fast", "had to learn", "pick up quickly", "ramp up"],
+      "triggers_de": ["schnell lernen", "musste sich einarbeiten", "rasch gelernt"],
+      "triggers_ro": ["a învățat repede", "a trebuit să învețe rapid", "adaptare rapidă"],
+      "answers_en": [
+        "Cristina had to learn fast when she joined Ingram Micro’s EMEA onboarding team—every client brought a different set of systems and expectations, and she still delivered seamless integrations.",
+        "Cristina also taught herself web-development basics during a 2019 bootcamp, which sharpened her communication with technical teams and helped her challenge or adapt developer input more intelligently."
+      ],
+      "answers_de": [
+        "Cristina musste schnell lernen, als sie zum EMEA-Onboarding-Team von Ingram Micro kam – jeder Kunde brachte eigene Systeme und Erwartungen mit, und sie lieferte trotzdem reibungslose Integrationen.",
+        "Cristina hat sich 2019 in einem Web-Development-Bootcamp Grundkenntnisse selbst beigebracht. Das verbesserte ihre Kommunikation mit technischen Teams erheblich und half ihr, Entwickler-Feedback gezielter zu nutzen."
+      ],
+      "answers_ro": [
+        "Cristina a trebuit să învețe rapid când s-a alăturat echipei EMEA de onboarding de la Ingram Micro – fiecare client venea cu propriile sisteme și așteptări, iar ea a reușit să livreze integrare fără probleme.",
+        "Cristina a învățat singură bazele dezvoltării web în timpul unui bootcamp din 2019, ceea ce i-a îmbunătățit semnificativ comunicarea cu echipele tehnice și i-a permis să adapteze mai inteligent soluțiile propuse."
+      ]
+    },
+    {
+      "id": "biggest_impact",
+      "triggers_en": ["biggest impact", "impact made", "most impact", "largest impact"],
+      "triggers_de": ["größter einfluss", "impact", "wirkung", "größter beitrag"],
+      "triggers_ro": ["cel mai mare impact", "impactul avut", "contribuție importantă"],
+      "answers_en": [
+        "Cristina made her biggest impact at gannaca by building the operational backbone for an AI-driven transformation service—turning abstract strategy into tangible systems and automation that drive real results.",
+        "At Covestro, Cristina ensured that compliance-heavy international orders for automotive clients were delivered flawlessly under tight deadlines, protecting production continuity across Europe."
+      ],
+      "answers_de": [
+        "Cristina hatte ihren größten Einfluss bei gannaca, wo sie das operative Rückgrat für einen KI-gestützten Transformationsservice aufbaute – sie verwandelte abstrakte Strategien in greifbare Systeme und Automatisierungen, die echte Ergebnisse liefern.",
+        "Bei Covestro sorgte Cristina dafür, dass komplexe internationale Bestellungen für Automobilkunden trotz strenger Compliance-Vorgaben und enger Fristen fehlerfrei geliefert wurden – so blieb die Produktion europaweit stabil."
+      ],
+      "answers_ro": [
+        "Cristina a avut cel mai mare impact la gannaca, unde a construit baza operațională pentru un serviciu de transformare bazat pe inteligență artificială – a transformat strategia abstractă în sisteme și automatizări concrete care generează rezultate reale.",
+        "La Covestro, Cristina a asigurat livrarea impecabilă a comenzilor internaționale complexe pentru clienți din industria auto, respectând cerințele stricte de conformitate și termenele scurte – menținând astfel continuitatea producției în întreaga Europă."
+      ]
+    }
+,
+    {
+      "id": "difficult_teammate_client",
+      "triggers_en": ["difficult teammate", "difficult client", "work with difficult", "conflict with teammate", "conflict with client"],
+      "triggers_de": ["schwieriger kollege", "schwieriger kunde", "konflikt im team", "konflikt mit kunde"],
+      "triggers_ro": ["coleg dificil", "client dificil", "conflict în echipă", "conflict cu clientul"],
+      "answers_en": [
+        "Cristina once worked with demanding clients at Ingram Micro who expected the platform to solve every business problem instantly. She handled this by designing workflows that met their real goals without overselling the technology’s limits.",
+        "At Cancom, Cristina managed internal conflict between sales and operations—sales promised unrealistic delivery speeds while developers resisted pressure. She built compromise through clear communication, realistic timelines, and mutual respect."
+      ],
+      "answers_de": [
+        "Cristina arbeitete bei Ingram Micro mit anspruchsvollen Kunden, die erwarteten, dass die Plattform sofort alle Geschäftsprobleme löst. Sie begegnete dem, indem sie Workflows entwarf, die die eigentlichen Ziele der Kunden erreichten, ohne die technischen Möglichkeiten zu überverkaufen.",
+        "Bei Cancom moderierte Cristina Konflikte zwischen Vertrieb und Operations – der Vertrieb versprach zu schnelle Lieferzeiten, während Entwickler unter Druck gerieten. Durch klare Kommunikation und realistische Zeitpläne fand sie eine tragfähige Lösung."
+      ],
+      "answers_ro": [
+        "Cristina a lucrat cu clienți exigenți la Ingram Micro care se așteptau ca platforma să le rezolve imediat toate problemele de business. A gestionat situația creând fluxuri care atingeau obiectivele reale fără a exagera capabilitățile tehnice.",
+        "La Cancom, Cristina a gestionat conflictele interne dintre vânzări și operațiuni – vânzările promiteau termene nerealiste, iar dezvoltatorii erau sub presiune. A găsit un echilibru prin comunicare clară și termene realiste bazate pe respect reciproc."
+      ]
+    },
+    {
+      "id": "feedback_criticism",
+      "triggers_en": ["feedback", "criticism", "handle feedback", "handle criticism", "receive feedback"],
+      "triggers_de": ["feedback", "kritik", "umgang mit feedback", "umgang mit kritik"],
+      "triggers_ro": ["feedback", "critică", "cum gestionează feedbackul", "cum primește critica"],
+      "answers_en": [
+        "Cristina treats feedback as data—she filters what’s useful, applies it immediately, and ignores what doesn’t serve improvement.",
+        "Cristina always asks for specifics because she believes vague feedback helps no one; clarity turns critique into action."
+      ],
+      "answers_de": [
+        "Cristina sieht Feedback als Datenquelle – sie filtert das Nützliche heraus, setzt es direkt um und blendet Unklares aus.",
+        "Cristina bittet immer um konkrete Beispiele, weil sie glaubt, dass vages Feedback niemandem hilft – Klarheit macht Kritik umsetzbar."
+      ],
+      "answers_ro": [
+        "Cristina tratează feedbackul ca pe date – filtrează ceea ce este util, aplică imediat și ignoră ce nu ajută la îmbunătățire.",
+        "Cristina cere întotdeauna exemple concrete, pentru că crede că feedbackul vag nu ajută pe nimeni – claritatea transformă critica în acțiune."
+      ]
+    },
+    {
+      "id": "disagree_manager",
+      "triggers_en": ["disagree with manager", "disagreed with manager", "conflict with manager", "push back manager"],
+      "triggers_de": ["uneinig mit vorgesetztem", "konflikt mit chef", "widerspruch gegenüber manager"],
+      "triggers_ro": ["neînțelegeri cu managerul", "conflict cu managerul", "cum reacționează la superiori"],
+      "answers_en": [
+        "Cristina once disagreed with a founder at gannaca who wanted everything delivered immediately. She countered by proposing phased timelines that kept momentum but protected quality and team balance.",
+        "At Covestro, Cristina pushed back when clients wanted to bypass compliance to save time—she stood firm, explaining that prevention is faster than damage control later."
+      ],
+      "answers_de": [
+        "Cristina war bei gannaca einmal anderer Meinung als der Gründer, der alles sofort umgesetzt sehen wollte. Sie schlug gestaffelte Zeitpläne vor, die den Schwung beibehielten, aber Qualität und Teamgesundheit schützten.",
+        "Bei Covestro widersetzte sich Cristina Kundenwünschen, die Compliance umgehen wollten, um Zeit zu sparen – sie erklärte ruhig, dass Prävention letztlich schneller ist als Schadensbegrenzung."
+      ],
+      "answers_ro": [
+        "Cristina a avut o neînțelegere cu fondatorul de la gannaca, care dorea ca totul să fie livrat imediat. Ea a propus un plan etapizat care a menținut ritmul, dar a protejat calitatea și echilibrul echipei.",
+        "La Covestro, Cristina s-a opus dorinței unor clienți de a ocoli conformitatea pentru a economisi timp – a explicat ferm că prevenția este mai rapidă decât corectarea ulterioară."
+      ]
+    },
+    {
+      "id": "team_role",
+      "triggers_en": ["team role", "role in a team", "in a team setting", "team setting"],
+      "triggers_de": ["rolle im team", "teamrolle", "arbeitsweise im team"],
+      "triggers_ro": ["rol în echipă", "mod de lucru în echipă", "cum lucrează în echipă"],
+      "answers_en": [
+        "Cristina usually takes the role of the architect—laying out structure so the team has clarity and chaos doesn’t win.",
+        "She also acts as the translator—making sure operations, sales, and development truly understand one another."
+      ],
+      "answers_de": [
+        "Cristina übernimmt meist die Rolle der Architektin – sie schafft Struktur und sorgt für Klarheit, damit Chaos keine Chance hat.",
+        "Außerdem agiert sie als Übersetzerin zwischen Operations, Vertrieb und Entwicklung, um gegenseitiges Verständnis sicherzustellen."
+      ],
+      "answers_ro": [
+        "Cristina are de obicei rolul de arhitect – pune structura la bază pentru ca echipa să aibă claritate și haosul să nu câștige.",
+        "De asemenea, joacă rolul de traducător – se asigură că echipele de operațiuni, vânzări și dezvoltare se înțeleg cu adevărat între ele."
+      ]
+    },
+    {
+      "id": "tight_deadline",
+      "triggers_en": ["tight deadline", "under a deadline", "time pressure", "work under pressure"],
+      "triggers_de": ["enger zeitplan", "unter zeitdruck", "termindruck"],
+      "triggers_ro": ["termen limită strâns", "sub presiunea timpului", "lucru sub stres"],
+      "answers_en": [
+        "Cristina handled tight deadlines many times—like the gannaca website relaunch, where she juggled UX, SEO, and tech builds to deliver on time without breaking launch day.",
+        "At Covestro, Cristina coordinated logistics and compliance for automotive clients whose production lines depended on punctual deliveries—failure simply wasn’t an option."
+      ],
+      "answers_de": [
+        "Cristina hat oft unter engen Zeitplänen gearbeitet – etwa beim Website-Relaunch von gannaca, wo sie UX, SEO und Technik so koordinierte, dass der Launch reibungslos stattfand.",
+        "Bei Covestro koordinierte sie Logistik und Compliance für Automobilkunden, deren Produktionslinien auf pünktliche Lieferungen angewiesen waren – Versagen war keine Option."
+      ],
+      "answers_ro": [
+        "Cristina a lucrat adesea cu termene limită strânse – de exemplu, la relansarea site-ului gannaca, unde a coordonat UX, SEO și partea tehnică pentru un lansament fără probleme.",
+        "La Covestro a coordonat logistica și conformitatea pentru clienți auto ale căror linii de producție depindeau de livrări exacte – eșecul nu era o opțiune."
+      ]
+    },
+    {
+      "id": "prioritization",
+      "triggers_en": ["prioritize", "prioritise", "everything urgent", "prioritization", "manage priorities"],
+      "triggers_de": ["prioritäten setzen", "alles dringend", "priorisierung"],
+      "triggers_ro": ["prioritizare", "cum stabilește prioritățile", "totul urgent"],
+      "answers_en": [
+        "Cristina prioritizes by asking one question first: what breaks if this doesn’t get done today? That immediately sets the order.",
+        "She also looks for leverage—finishing tasks that unlock five more, not just the loudest ones. For her, urgency equals system impact, not volume."
+      ],
+      "answers_de": [
+        "Cristina setzt Prioritäten, indem sie sich zuerst fragt: Was bricht zusammen, wenn das heute nicht erledigt wird? Diese Antwort bestimmt sofort die Reihenfolge.",
+        "Außerdem achtet sie auf Hebelwirkung – sie erledigt Aufgaben, die mehrere andere freischalten. Für sie bedeutet Dringlichkeit Systemrelevanz, nicht Lautstärke."
+      ],
+      "answers_ro": [
+        "Cristina stabilește prioritățile întrebându-se mai întâi: ce se strică dacă nu fac asta azi? Răspunsul clarifică imediat ordinea.",
+        "Ea caută și efectul de levier – finalizează sarcinile care deblochează altele cinci, nu doar pe cele mai zgomotoase. Pentru ea, urgența înseamnă impact asupra sistemului, nu presiune de moment."
+      ]
+    },
+    {
+      "id": "biggest_mistake",
+      "triggers_en": ["biggest mistake", "mistake you made", "error made", "failure and learned"],
+      "triggers_de": ["größter fehler", "fehler gemacht", "was gelernt", "scheitern"],
+      "triggers_ro": ["cea mai mare greșeală", "greșeală făcută", "ce a învățat dintr-o greșeală"],
+      "answers_en": [
+        "Cristina once underestimated compliance requirements at Covestro early in her career. She fixed it quickly, documented the solution, and built checks to prevent it from happening again.",
+        "At gannaca, Cristina automated a flawed process too early. She rolled it back, repaired the foundation, and then re-automated it properly—a solid lesson in timing and precision."
+      ],
+      "answers_de": [
+        "Cristina unterschätzte zu Beginn ihrer Karriere bei Covestro einmal die Compliance-Anforderungen. Sie korrigierte den Fehler schnell, dokumentierte die Lösung und implementierte Kontrollmechanismen, um Wiederholungen zu vermeiden.",
+        "Bei gannaca automatisierte Cristina einen fehlerhaften Prozess zu früh. Sie machte einen Schritt zurück, reparierte die Basis und automatisierte anschließend korrekt – eine wertvolle Lektion in Timing und Präzision."
+      ],
+      "answers_ro": [
+        "Cristina a subestimat la începutul carierei sale la Covestro cerințele de conformitate. A corectat rapid greșeala, a documentat soluția și a introdus verificări pentru a preveni repetarea.",
+        "La gannaca, Cristina a automatizat prea devreme un proces defectuos. A revenit, a reparat baza și apoi a reautomatizat corect – o lecție solidă despre momentul potrivit și precizie."
+      ]
+    }
+,
+    {
+      "id": "motivation_tough_times",
+      "triggers_en": ["motivates", "motivation", "tough times", "when things get tough", "what keeps you going"],
+      "triggers_de": ["motivation", "was motiviert sie", "durchhalten", "was treibt sie an"],
+      "triggers_ro": ["motivație", "ce o motivează", "ce o ține concentrată", "cum trece prin momente grele"],
+      "answers_en": [
+        "Cristina stays motivated by the moment when everything finally clicks—when workflows connect, automation runs, and the system works as designed. That sense of order is her fuel.",
+        "Cristina is also driven by curiosity. She sees tough situations as hidden challenges and enjoys untangling them because each fix strengthens the system for next time."
+      ],
+      "answers_de": [
+        "Cristina bleibt motiviert durch den Moment, in dem alles zusammenpasst – wenn Workflows greifen, Automatisierung läuft und das System wie geplant funktioniert. Dieses Gefühl von Ordnung treibt sie an.",
+        "Cristina wird auch von Neugier angetrieben. Sie sieht schwierige Situationen als versteckte Herausforderungen und findet Freude daran, sie zu entwirren – jede gelöste Aufgabe stärkt das System für die Zukunft."
+      ],
+      "answers_ro": [
+        "Cristina rămâne motivată în momentul în care totul se leagă – când fluxurile funcționează, automatizarea rulează și sistemul merge exact cum trebuie. Acel sentiment de ordine este combustibilul ei.",
+        "Cristina este de asemenea condusă de curiozitate. Vede momentele grele ca provocări ascunse și se bucură să le desfacă, pentru că fiecare rezolvare întărește sistemul pentru data viitoare."
+      ]
+    },
+    {
+      "id": "work_environment",
+      "triggers_en": ["work environment", "environment thrive", "best environment", "culture thrive"],
+      "triggers_de": ["arbeitsumfeld", "kultur", "wo sie am besten arbeitet"],
+      "triggers_ro": ["mediu de lucru", "unde performează cel mai bine", "cultură de lucru"],
+      "answers_en": [
+        "Cristina thrives in environments that combine autonomy with clarity—where she’s trusted to build but guided by a clear direction.",
+        "She also values cultures that embrace experimentation over endless alignment—where trying, adjusting, and moving forward are normal parts of work."
+      ],
+      "answers_de": [
+        "Cristina blüht in Umgebungen auf, die Autonomie und Klarheit vereinen – wo sie selbstständig gestalten darf, aber ein klarer Kurs vorgegeben ist.",
+        "Sie schätzt Kulturen, die Experimentieren über endlose Abstimmung stellen – wo Ausprobieren, Anpassen und Weitermachen selbstverständlich sind."
+      ],
+      "answers_ro": [
+        "Cristina performează cel mai bine într-un mediu care combină autonomia cu claritatea – unde are încredere să construiască, dar și o direcție clară.",
+        "De asemenea, apreciază culturile care încurajează experimentarea mai mult decât alinierile nesfârșite – unde încercarea, ajustarea și progresul fac parte din normalitate."
+      ]
+    },
+    {
+      "id": "stay_up_to_date",
+      "triggers_en": ["stay up to date", "trends", "keep current", "how stay current"],
+      "triggers_de": ["aktuell bleiben", "trends verfolgen", "wie sie auf dem laufenden bleibt"],
+      "triggers_ro": ["cum se menține la curent", "tendințe", "cum urmărește noutățile"],
+      "answers_en": [
+        "Cristina stays up to date by testing tools hands-on—AI, automation, and outreach platforms. Reading is good, but building prototypes is how she really learns.",
+        "She also watches what peers actually adopt in real life, not just what’s hyped. For her, a trend only matters if it survives real-world use."
+      ],
+      "answers_de": [
+        "Cristina bleibt durch praktische Anwendung auf dem Laufenden – sie testet Tools aus den Bereichen KI, Automatisierung und Kommunikation. Lesen reicht nicht, das echte Verständnis kommt durchs Ausprobieren.",
+        "Außerdem beobachtet sie, was Kolleginnen und Kollegen wirklich übernehmen, nicht nur, was im Trend liegt. Ein Trend zählt für sie erst, wenn er den Praxistest besteht."
+      ],
+      "answers_ro": [
+        "Cristina se menține la curent testând direct instrumente noi – din domeniul inteligenței artificiale, automatizării și comunicării. Cititul e util, dar învățarea reală vine din practică.",
+        "De asemenea, urmărește ce adoptă colegii și partenerii în practică, nu doar ce e la modă. Pentru ea, un trend contează doar dacă rezistă în realitate."
+      ]
+    },
+    {
+      "id": "independent_vs_collaboration",
+      "triggers_en": ["independent work", "collaboration", "balance independent", "work alone vs team"],
+      "triggers_de": ["selbstständig arbeiten", "zusammenarbeit", "balance zwischen teamarbeit und eigenständigkeit"],
+      "triggers_ro": ["muncă independentă", "colaborare", "echilibru între munca individuală și cea de echipă"],
+      "answers_en": [
+        "Cristina prefers to build independently first, then bring her work to the team for feedback and pressure-testing—it keeps both focus and quality high.",
+        "She believes collaboration works best in smart checkpoints, not as a daily crutch. Align, test, adjust, and move forward."
+      ],
+      "answers_de": [
+        "Cristina arbeitet am liebsten zunächst eigenständig und bringt ihre Ergebnisse dann ins Team, um Feedback und Tests zu erhalten – so bleiben Fokus und Qualität hoch.",
+        "Sie ist überzeugt, dass Zusammenarbeit am besten in klugen Abstimmungspunkten funktioniert, nicht als tägliche Abhängigkeit. Abstimmen, testen, anpassen, weitermachen."
+      ],
+      "answers_ro": [
+        "Cristina preferă să construiască mai întâi independent, apoi să aducă rezultatul în echipă pentru feedback și testare – astfel menține claritatea și calitatea.",
+        "Crede că colaborarea funcționează cel mai bine în puncte de verificare inteligente, nu ca o dependență zilnică. Aliniere, testare, ajustare, progres."
+      ]
+    },
+    {
+      "id": "taught_yourself",
+      "triggers_en": ["taught yourself", "recently learned", "new thing you learned", "self taught"],
+      "triggers_de": ["selbst beigebracht", "neu gelernt", "was sie sich selbst beigebracht hat"],
+      "triggers_ro": ["ce a învățat singură", "ce a învățat recent", "abilitate nouă"],
+      "answers_en": [
+        "Cristina recently taught herself how to use avatar technology with HeyGen—turning static team profiles into dynamic digital identities that enhance brand presence.",
+        "She also deepened her understanding of SEO and UX integration on the gannaca website, learning how structure influences both visibility and user experience."
+      ],
+      "answers_de": [
+        "Cristina hat sich kürzlich selbst beigebracht, wie man Avatar-Technologie mit HeyGen nutzt – sie verwandelte statische Teamprofile in dynamische digitale Identitäten, die die Markenpräsenz stärken.",
+        "Außerdem vertiefte sie ihr Verständnis für SEO- und UX-Integration auf der gannaca-Website und lernte, wie Struktur Sichtbarkeit und Nutzererlebnis beeinflusst."
+      ],
+      "answers_ro": [
+        "Cristina a învățat recent să folosească tehnologia de avatar HeyGen – a transformat profilurile statice ale echipei în identități digitale dinamice care întăresc imaginea brandului.",
+        "De asemenea, și-a aprofundat cunoștințele de integrare SEO și UX pe site-ul gannaca, învățând cum structura influențează atât vizibilitatea, cât și experiența utilizatorului."
+      ]
+    },
+    {
+      "id": "five_years",
+      "triggers_en": ["five years", "5 years", "where do you see yourself", "future in five"],
+      "triggers_de": ["in fünf jahren", "zukunft", "wo sieht sie sich in fünf jahren"],
+      "triggers_ro": ["peste cinci ani", "unde se vede în viitor", "planuri de viitor"],
+      "answers_en": [
+        "In five years, Cristina sees herself leading large-scale transformation programs where systems design becomes the key strategic lever for change.",
+        "Cristina also envisions building an operations lab—testing real-time prototypes of future workflows instead of waiting for theory to catch up."
+      ],
+      "answers_de": [
+        "In fünf Jahren sieht sich Cristina an der Spitze groß angelegter Transformationsprogramme, bei denen Systemdesign zum zentralen strategischen Hebel wird.",
+        "Cristina stellt sich außerdem vor, ein Operations-Labor aufzubauen, in dem zukünftige Arbeitsabläufe in Echtzeit getestet werden, statt auf theoretische Entwicklungen zu warten."
+      ],
+      "answers_ro": [
+        "Peste cinci ani, Cristina se vede conducând programe de transformare la scară mare, unde designul de sisteme devine pârghia strategică a schimbării.",
+        "Cristina își imaginează și un laborator operațional – un spațiu unde să testeze în timp real prototipuri de fluxuri de lucru, fără să aștepte teoria să le prindă din urmă."
+      ]
+    },
+    {
+      "id": "career_goals",
+      "triggers_en": ["career goals", "career objective", "long term goals", "next steps career"],
+      "triggers_de": ["karriereziele", "langfristige ziele", "berufliche ziele"],
+      "triggers_ro": ["obiective de carieră", "planuri profesionale", "pași următori în carieră"],
+      "answers_en": [
+        "Cristina’s long-term goal is to keep sharpening her role as a systems builder—bridging vision and execution in increasingly complex environments.",
+        "She also aims to evolve into strategic leadership while keeping hands-on execution in her skill set—combining both strategy and practice."
+      ],
+      "answers_de": [
+        "Cristinas langfristiges Ziel ist es, ihre Rolle als Systemarchitektin weiter zu schärfen – Vision und Umsetzung in immer komplexeren Umgebungen zu verbinden.",
+        "Sie möchte außerdem in die strategische Führung hineinwachsen, ohne den Bezug zur praktischen Umsetzung zu verlieren – eine Kombination aus Strategie und Tatkraft."
+      ],
+      "answers_ro": [
+        "Obiectivul pe termen lung al Cristinei este să-și perfecționeze rolul de constructor de sisteme – să lege viziunea de execuție în contexte tot mai complexe.",
+        "De asemenea, își propune să evolueze către un rol de leadership strategic, păstrând în același timp abilitățile de execuție practică – o combinație între strategie și acțiune."
+      ]
+    },
+    {
+      "id": "unlimited_resources_project",
+      "triggers_en": ["unlimited resources", "million dollars", "start a company", "project tomorrow"],
+      "triggers_de": ["unbegrenzte ressourcen", "million euro", "wenn sie ein unternehmen gründen könnte"],
+      "triggers_ro": ["resurse nelimitate", "milion de dolari", "dacă ar începe o companie"],
+      "answers_en": [
+        "If Cristina had unlimited resources, she would build a real-time organizational dashboard combining AI, data, and culture—to show exactly how healthy a company is and what needs fixing.",
+        "She would also create a platform for SMEs with plug-and-play automations and AI support—enterprise-grade tools made affordable and simple."
+      ],
+      "answers_de": [
+        "Wenn Cristina unbegrenzte Ressourcen hätte, würde sie ein Echtzeit-Dashboard entwickeln, das KI, Daten und Unternehmenskultur verbindet – um zu zeigen, wie gesund ein Unternehmen wirklich ist und wo Handlungsbedarf besteht.",
+        "Sie würde außerdem eine Plattform für KMUs schaffen, mit Plug-and-Play-Automatisierungen und KI-Unterstützung – Unternehmenswerkzeuge in zugänglicher Form."
+      ],
+      "answers_ro": [
+        "Dacă Cristina ar avea resurse nelimitate, ar construi un tablou de bord organizațional în timp real, care combină IA, datele și cultura – pentru a arăta exact cât de sănătoasă este o companie și ce trebuie îmbunătățit.",
+        "Ar crea și o platformă pentru IMM-uri cu automatizări plug-and-play și suport IA – instrumente de nivel enterprise, dar accesibile și ușor de folosit."
+      ]
+    },
+    {
+      "id": "skill_next_year",
+      "triggers_en": ["skill develop", "next year skill", "learn next year", "new skill"],
+      "triggers_de": ["neue fähigkeit", "was sie lernen möchte", "welche kompetenz als nächstes"],
+      "triggers_ro": ["abilitate nouă", "ce vrea să învețe anul viitor", "dezvoltare competențe"],
+      "answers_en": [
+        "Next year, Cristina wants to strengthen her advanced analytics skills—moving from descriptive reporting toward predictive modeling.",
+        "She also plans to refine her stakeholder navigation—because mastering both systems and people is the real competitive advantage."
+      ],
+      "answers_de": [
+        "Im nächsten Jahr möchte Cristina ihre Fähigkeiten in fortgeschrittener Analytik vertiefen – von beschreibendem Reporting zu prädiktivem Modellieren übergehen.",
+        "Außerdem will sie ihre Stakeholder-Kommunikation weiterentwickeln – denn wer Systeme und Menschen gleichermaßen versteht, hat den entscheidenden Vorteil."
+      ],
+      "answers_ro": [
+        "În anul următor, Cristina vrea să-și dezvolte abilitățile de analiză avansată – trecând de la rapoarte descriptive la modelare predictivă.",
+        "Își propune de asemenea să-și perfecționeze modul de navigare printre părțile interesate – pentru că adevărata forță vine din a înțelege atât sistemele, cât și oamenii."
+      ]
+    }
+,
+    {
+      "id": "curveball_animal",
+      "triggers_en": ["animal would you be", "animal and why", "which animal"],
+      "triggers_de": ["welches tier wäre sie", "tier und warum", "tierwahl"],
+      "triggers_ro": ["ce animal ar fi", "animal și de ce", "ce animal o reprezintă"],
+      "answers_en": [
+        "If Cristina were an animal, she’d be an octopus—adaptable, analytical, and thriving in complexity with many things in motion at once.",
+        "Cristina might also choose a border collie—always scanning the system and instinctively bringing order to chaos."
+      ],
+      "answers_de": [
+        "Wenn Cristina ein Tier wäre, wäre sie ein Oktopus – anpassungsfähig, analytisch und in komplexen Situationen zu Hause, während sie vieles gleichzeitig im Blick behält.",
+        "Alternativ wäre sie ein Border Collie – immer wachsam, ordnend und darauf bedacht, Struktur in das Chaos zu bringen."
+      ],
+      "answers_ro": [
+        "Dacă ar fi un animal, Cristina ar fi o caracatiță – adaptabilă, analitică și capabilă să gestioneze complexitatea cu multe lucruri în mișcare simultan.",
+        "Alternativ, ar alege un border collie – mereu atentă, aducând ordine în haos din instinct."
+      ]
+    },
+    {
+      "id": "curveball_teach_something",
+      "triggers_en": ["teach me something", "teach me in two minutes", "teach something new"],
+      "triggers_de": ["bring mir etwas bei", "erklär mir etwas neues", "was kann ich in zwei minuten lernen"],
+      "triggers_ro": ["învață-mă ceva", "explică-mi ceva în două minute", "ceva nou de învățat"],
+      "answers_en": [
+        "Cristina likes to share one rule: a process is broken if it takes longer to explain than to execute.",
+        "She also says every bottleneck costs three times more downstream than it does at the point where it appears—fix early, save later."
+      ],
+      "answers_de": [
+        "Cristina teilt gerne eine Regel: Ein Prozess ist kaputt, wenn seine Erklärung länger dauert als seine Ausführung.",
+        "Außerdem sagt sie: Jeder Engpass kostet dreimal so viel weiter unten im Prozess wie an der Stelle, an der er entsteht – früh beheben, später sparen."
+      ],
+      "answers_ro": [
+        "Cristina spune mereu o regulă simplă: un proces e defect dacă explicarea lui durează mai mult decât execuția.",
+        "Ea adaugă că fiecare blocaj costă de trei ori mai mult mai jos în sistem decât în punctul în care apare – rezolvă devreme, economisește mai târziu."
+      ]
+    },
+    {
+      "id": "curveball_million_dollars",
+      "triggers_en": ["million dollars", "start a company with a million", "1,000,000"],
+      "triggers_de": ["eine million euro", "wenn sie eine firma gründen könnte", "millionenprojekt"],
+      "triggers_ro": ["un milion de dolari", "dacă ar începe o companie", "resurse nelimitate"],
+      "answers_en": [
+        "If Cristina had a million dollars, she’d build an 'Ops-in-a-box' platform for SMEs—ready-made automations, clear documentation, and AI assistance all in one.",
+        "She’d also launch a marketplace of 'translators'—operators who can bridge founders, engineers, and clients efficiently."
+      ],
+      "answers_de": [
+        "Wenn Cristina eine Million Euro hätte, würde sie eine 'Ops-in-a-box'-Plattform für KMUs aufbauen – fertige Automatisierungen, klare Dokumentation und KI-Unterstützung in einem Paket.",
+        "Sie würde außerdem einen Marktplatz für 'Übersetzer' schaffen – Fachleute, die Gründer, Ingenieure und Kunden effektiv miteinander verbinden."
+      ],
+      "answers_ro": [
+        "Dacă ar avea un milion de dolari, Cristina ar construi o platformă 'Ops-in-a-box' pentru IMM-uri – automatizări gata făcute, documentație clară și asistență IA într-un singur loc.",
+        "Ar lansa și un marketplace de 'traducători' – oameni capabili să facă legătura eficient între fondatori, ingineri și clienți."
+      ]
+    },
+    {
+      "id": "last_book_article",
+      "triggers_en": ["last book", "last article", "made you think", "inspired reading"],
+      "triggers_de": ["letztes buch", "letzter artikel", "was hat sie inspiriert"],
+      "triggers_ro": ["ultima carte", "ultimul articol", "ce a inspirat-o recent"],
+      "answers_en": [
+        "Cristina recently read an article about brain-computer interfaces leaving the lab and entering real life—it made her reflect on how technology is reshaping how humans define work and decision-making.",
+        "She was also inspired by a piece about how technology quietly rewires work culture—not through gadgets, but by changing expectations and what 'productivity' really means."
+      ],
+      "answers_de": [
+        "Cristina hat kürzlich einen Artikel über Gehirn-Computer-Schnittstellen gelesen, die das Labor verlassen und in den Alltag eintreten – das brachte sie zum Nachdenken darüber, wie Technologie unsere Definition von Arbeit und Entscheidungsfindung verändert.",
+        "Sie war auch von einem Beitrag inspiriert, der zeigt, wie Technologie die Arbeitskultur leise verändert – nicht durch Geräte, sondern durch neue Erwartungen und ein anderes Verständnis von Produktivität."
+      ],
+      "answers_ro": [
+        "Cristina a citit recent un articol despre interfețele creier-calculator care ies din laborator și ajung în viața reală – a făcut-o să reflecteze asupra modului în care tehnologia schimbă felul în care oamenii definesc munca și luarea deciziilor.",
+        "A fost inspirată și de un text despre cum tehnologia rescrie în tăcere cultura muncii – nu prin gadgeturi, ci prin schimbarea așteptărilor și a sensului cuvântului 'productivitate'."
+      ]
+    },
+    {
+      "id": "why_hire",
+      "triggers_en": ["why should we hire", "hire her", "why hire her", "why hire"],
+      "triggers_de": ["warum einstellen", "weshalb sollten wir sie einstellen", "warum sie"],
+      "triggers_ro": ["de ce să o angajăm", "de ce ea", "argument angajare"],
+      "answers_en": [
+        "You should hire Cristina because her track record isn’t theory—she has built, scaled, and proven systems across industries, leaving each role stronger than before.",
+        "Cristina stands out because she can translate visionary strategy into executable systems while keeping sales, ops, and dev teams aligned and motivated."
+      ],
+      "answers_de": [
+        "Sie sollten Cristina einstellen, weil ihre Erfolge keine Theorie sind – sie hat Systeme in verschiedenen Branchen aufgebaut, skaliert und verbessert und jede Rolle gestärkt hinterlassen.",
+        "Cristina überzeugt, weil sie visionäre Strategien in umsetzbare Systeme übersetzen kann und dabei Vertrieb, Operations und Entwicklung gleichermaßen motiviert und auf Kurs hält."
+      ],
+      "answers_ro": [
+        "Ar trebui să o angajați pe Cristina pentru că rezultatele ei nu sunt teorie – a construit, scalat și perfecționat sisteme în mai multe industrii, lăsând fiecare rol mai puternic decât l-a găsit.",
+        "Cristina se remarcă prin abilitatea de a transforma strategiile vizionare în sisteme concrete și funcționale, menținând aliniate și motivate echipele de vânzări, operațiuni și dezvoltare."
+      ]
+    },
+    {
+      "id": "what_sets_apart",
+      "triggers_en": ["sets apart", "different from other candidates", "unique", "stand out"],
+      "triggers_de": ["was sie unterscheidet", "anders als andere kandidaten", "was sie besonders macht"],
+      "triggers_ro": ["ce o diferențiază", "ce o face unică", "cum se evidențiază"],
+      "answers_en": [
+        "Cristina stands apart through her ability to move fluently between strategy, technology, and operations—bridging disciplines without losing speed.",
+        "She’s also unique in her track record of making other people’s bold ideas not just possible, but functional and sustainable."
+      ],
+      "answers_de": [
+        "Cristina unterscheidet sich durch ihre Fähigkeit, sich mühelos zwischen Strategie, Technologie und Operations zu bewegen – sie überbrückt Disziplinen, ohne an Tempo zu verlieren.",
+        "Sie ist außerdem besonders, weil sie aus den kühnen Ideen anderer funktionierende, nachhaltige Systeme macht."
+      ],
+      "answers_ro": [
+        "Cristina se diferențiază prin abilitatea de a naviga cu ușurință între strategie, tehnologie și operațiuni – leagă disciplinele fără să piardă din viteză.",
+        "Este unică și prin faptul că transformă ideile ambițioase ale altora în sisteme funcționale și sustenabile."
+      ]
+    },
+    {
+      "id": "questions_for_us",
+      "triggers_en": ["questions for us", "any questions for us", "what questions do you have"],
+      "triggers_de": ["fragen an uns", "hat sie fragen", "fragen an das unternehmen"],
+      "triggers_ro": ["întrebări pentru noi", "are întrebări", "ce ar întreba compania"],
+      "answers_en": [
+        "Cristina would probably ask: 'What’s the one thing here that’s broken and needs fixing yesterday?' That’s the real scope of the role.",
+        "She’d also ask: 'Six months from now, how will you measure success in this position?' Knowing that gives her clarity on what truly matters."
+      ],
+      "answers_de": [
+        "Cristina würde wahrscheinlich fragen: „Was ist die eine Sache hier, die dringend repariert werden muss?“ – das zeigt ihr den wahren Umfang der Rolle.",
+        "Sie würde auch fragen: „Wie messen Sie in sechs Monaten den Erfolg in dieser Position?“ – diese Antwort bringt für sie Klarheit darüber, was wirklich zählt."
+      ],
+      "answers_ro": [
+        "Cristina ar întreba probabil: „Care este acel lucru care trebuie reparat imediat aici?“ – asta îi arată cu adevărat dimensiunea rolului.",
+        "Ar mai întreba: „Peste șase luni, cum veți măsura succesul în această poziție?” – răspunsul i-ar oferi claritate asupra a ceea ce contează cu adevărat."
+      ]
+    }
+  ]
+}
