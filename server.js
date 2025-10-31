@@ -36,12 +36,56 @@ try {
   console.warn('No interview.i18n.json found.');
 }
 
-// ---------- Simple language guess (en | de | ro) ----------
+// ---------- Normalization helpers (diacritic-insensitive, lowercase) ----------
+function normalize(s = '') {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // remove accents (ä→a, ș→s)
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ---------- Better language guess (no API; robust to missing diacritics) ----------
 function guessLang(text = '') {
-  const t = text.toLowerCase();
-  if (/[ăîșțâ]/.test(t)) return 'ro';
-  if (/[äöüß]/.test(t) || /\bder\b|\bdie\b|\bdas\b/.test(t)) return 'de';
+  const t = normalize(text);
+
+  if (/[äöüß]/i.test(text)) return 'de';
+  if (/[ăâîșşţțșț]/i.test(text)) return 'ro';
+
+  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|faehigkeiten|werkzeuge)\b/.test(t)) return 'de';
+  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|munca|abilitati|fluxuri)\b/.test(t)) return 'ro';
+
   return 'en';
+}
+
+// ---------- Interview answer (i18n, diacritic-insensitive) ----------
+function interviewAnswer(question) {
+  if (!INTERVIEW.clusters?.length) return null;
+
+  const qNorm = normalize(question);
+  const lang = guessLang(qNorm);
+
+  const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
+  const ansKey  = lang === 'de' ? 'answers_de'  : lang === 'ro' ? 'answers_ro'  : 'answers_en';
+
+  for (const c of INTERVIEW.clusters) {
+    const triggers = (c[trigKey] || []).map(normalize);
+    if (triggers.some(t => t && qNorm.includes(t))) {
+      const pool = c[ansKey] || c.answers_en || [];
+      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+
+  for (const c of INTERVIEW.clusters) {
+    const enTriggers = (c.triggers_en || []).map(normalize);
+    if (enTriggers.some(t => t && qNorm.includes(t))) {
+      const pool = (c[ansKey] && c[ansKey].length ? c[ansKey] : c.answers_en) || [];
+      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+
+  return null;
 }
 
 // ---------- Interview answer (i18n) ----------
@@ -389,4 +433,5 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
