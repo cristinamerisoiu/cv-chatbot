@@ -26,29 +26,43 @@ try {
   console.warn('No embeddings.json found. Running without CV memory.');
 }
 
-// ---------- Load interview clusters (personality Q&A) ----------
-let INTERVIEW = { items: [] };
+// ---------- Load multilingual interview ----------
+let INTERVIEW = { clusters: [] };
 try {
-  const p2 = path.join(__dirname, 'interview.json');
-  INTERVIEW = JSON.parse(fs.readFileSync(p2, 'utf8'));
-  console.log(`Loaded interview bank with ${INTERVIEW.items.length} items`);
-} catch (e) {
-  console.warn('No interview.json found (personality Q&A disabled).');
+  const p = path.join(__dirname, 'interview.i18n.json');
+  INTERVIEW = JSON.parse(fs.readFileSync(p, 'utf8'));
+  console.log(`Loaded interview bank (${INTERVIEW.clusters.length} clusters)`);
+} catch {
+  console.warn('No interview.i18n.json found.');
 }
 
+// ---------- Simple language guess (en | de | ro) ----------
+function guessLang(text = '') {
+  const t = text.toLowerCase();
+  if (/[ăîșțâ]/.test(t)) return 'ro';
+  if (/[äöüß]/.test(t) || /\bder\b|\bdie\b|\bdas\b/.test(t)) return 'de';
+  return 'en';
+}
+
+// ---------- Interview answer (i18n) ----------
 function interviewAnswer(question) {
-  if (!INTERVIEW.items?.length) return null;
+  if (!INTERVIEW.clusters?.length) return null;
   const q = (question || '').toLowerCase();
-  for (const item of INTERVIEW.items) {
-    const triggers = (item.triggers || []).map(t => t.toLowerCase().trim());
-    if (triggers.some(t => q.includes(t))) {
-      const pool = item.answers || [];
-      if (!pool.length) continue;
-      return pool[Math.floor(Math.random() * pool.length)];
+  const lang = guessLang(q);
+
+  const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
+  const ansKey  = lang === 'de' ? 'answers_de'  : lang === 'ro' ? 'answers_ro'  : 'answers_en';
+
+  for (const item of INTERVIEW.clusters) {
+    const triggers = (item[trigKey] || []).map(t => (t || '').toLowerCase().trim());
+    if (triggers.some(t => t && q.includes(t))) {
+      const pool = item[ansKey] || [];
+      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
     }
   }
   return null;
 }
+
 
 // ---------- Cosine similarity ----------
 function cosineSim(a, b) {
@@ -375,3 +389,4 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
