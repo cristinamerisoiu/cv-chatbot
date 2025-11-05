@@ -106,6 +106,7 @@ function detectTag(qLower) {
 function smartBoundaryAndInterview(question) {
   const qNorm = normalize(question);
   const lang = guessLang(question); // Detect language FIRST
+console.log('Detected language:', lang, 'for question:', question); // ADD THIS LINE FOR DEBUGGING
   
   // ----- Personal boundaries: AGE (English, German, Romanian) -----
   if (
@@ -608,3 +609,4 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
