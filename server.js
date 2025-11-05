@@ -74,22 +74,6 @@ function interviewAnswer(question) {
   }
   return null;
 }
-// ---------- Interview answer (i18n) ----------
-function interviewAnswer(question) {
-  if (!INTERVIEW.clusters?.length) return null;
-  const q = (question || '').toLowerCase();
-  const lang = guessLang(q);
-  const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
-  const ansKey = lang === 'de' ? 'answers_de' : lang === 'ro' ? 'answers_ro' : 'answers_en';
-  for (const item of INTERVIEW.clusters) {
-    const triggers = (item[trigKey] || []).map(t => (t || '').toLowerCase().trim());
-    if (triggers.some(t => t && q.includes(t))) {
-      const pool = item[ansKey] || [];
-      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
-    }
-  }
-  return null;
-}
 // ---------- Cosine similarity ----------
 function cosineSim(a, b) {
   let dot = 0, na = 0, nb = 0;
@@ -118,36 +102,59 @@ function detectTag(qLower) {
   if (/\bcertifications?\b|\btraining\b|\bcourses?\b/.test(qLower)) return 'certifications';
   return null;
 }
-// ---------- Smart boundaries + interview (rotating) ----------
-function smartBoundaryAndInterview(qLower) {
-  const q = qLower.replace(/[?.!]/g, ' ').trim();
-  // ----- Personal boundaries (with word-boundary regex for 'age') -----
-  if (/\bhow\s+old\b/.test(q) || /\b(age|years\s+old)\b/.test(q)) {
+// ---------- Smart boundaries + interview (rotating) - MULTILINGUAL ----------
+function smartBoundaryAndInterview(question) {
+  const qNorm = normalize(question); // Normalized for pattern matching
+  
+  // ----- Personal boundaries: AGE (English, German, Romanian) -----
+  if (
+    /\bhow\s+old\b/.test(qNorm) || 
+    /\b(age|years\s+old)\b/.test(qNorm) ||
+    /\b(wie\s+alt|alter)\b/.test(qNorm) ||
+    /\b(cati\s+ani|varsta|ani\s+are)\b/.test(qNorm)
+  ) {
     const opts = [
-      "Age isn’t the useful signal here. Focus on capability, outcomes, and fit.",
-      "Let’s optimize for signal: skills, outcomes, and alignment matter more than age.",
-      "What’s relevant is impact and fit. Age doesn’t predict either."
+      "Age isn't the useful signal here. Focus on capability, outcomes, and fit.",
+      "Let's optimize for signal: skills, outcomes, and alignment matter more than age.",
+      "What's relevant is impact and fit. Age doesn't predict either."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(kids|children|child)\b/.test(q)) {
+  
+  // ----- Personal boundaries: KIDS/CHILDREN (English, German, Romanian) -----
+  if (
+    /\b(kids|children|child)\b/.test(qNorm) ||
+    /\b(kinder|kind)\b/.test(qNorm) ||
+    /\b(copii|copil)\b/.test(qNorm)
+  ) {
     const opts = [
-      "Personal details aren’t relevant. Happy to discuss mentoring and team development instead.",
-      "Let’s keep it professional. Ask about enablement, leadership, or outcomes.",
-      "That’s outside scope. You shouldn't ask that."
+      "Personal details aren't relevant. Happy to discuss mentoring and team development instead.",
+      "Let's keep it professional. Ask about enablement, leadership, or outcomes.",
+      "That's outside scope. You shouldn't ask that."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(single|married|relationship|partner|family)\b/.test(q)) {
+  
+  // ----- Personal boundaries: MARITAL STATUS (English, German, Romanian) -----
+  if (
+    /\b(single|married|relationship|partner|family)\b/.test(qNorm) ||
+    /\b(verheiratet|ledig|beziehung|familie)\b/.test(qNorm) ||
+    /\b(casatorita|casatorit|relatie|partener|familie)\b/.test(qNorm)
+  ) {
     const opts = [
-      "Let’s keep the focus on experience, decision-making, and outcomes.",
+      "Let's keep the focus on experience, decision-making, and outcomes.",
       "Professional scope only: strengths, track record, and fit.",
-      "Happy to cover roles, skills, and results - personal details aren’t part of this profile."
+      "Happy to cover roles, skills, and results - personal details aren't part of this profile."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  // ----- Interview-style themes (existing) -----
-  if (/\bstrengths?\b/.test(q)) {
+  
+  // ----- STRENGTHS (English, German, Romanian) -----
+  if (
+    /\bstrengths?\b/.test(qNorm) ||
+    /\b(starken|starke)\b/.test(qNorm) ||
+    /\b(puncte\s+tari|forte)\b/.test(qNorm)
+  ) {
     const opts = [
       "Strengths: fast pattern recognition, crisp communication, and reliable delivery in complex environments.",
       "She connects strategy to execution quickly, communicates with precision, and delivers predictably.",
@@ -155,15 +162,27 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(weakness|weaknesses|flaw|flaws)\b/.test(q)) {
+  
+  // ----- WEAKNESSES (English, German, Romanian) -----
+  if (
+    /\b(weakness|weaknesses|flaw|flaws)\b/.test(qNorm) ||
+    /\b(schwache|schwachen|mangel)\b/.test(qNorm) ||
+    /\b(punct\s+slab|puncte\s+slabe|slabiciune)\b/.test(qNorm)
+  ) {
     const opts = [
-      "She tends to over-polish; mitigated by time-boxing and clear ‘good-enough’ criteria.",
+      "She tends to over-polish; mitigated by time-boxing and clear 'good-enough' criteria.",
       "Perfectionist streak — managed with deadlines, peer review, and incremental releases.",
       "Bias toward optimizing details; balanced by prioritizing impact and shipping cadence."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(challenge|hard\s*time|difficult|hardest)\b/.test(q)) {
+  
+  // ----- CHALLENGES (English, German, Romanian) -----
+  if (
+    /\b(challenge|hard\s*time|difficult|hardest)\b/.test(qNorm) ||
+    /\b(herausforderung|schwierig)\b/.test(qNorm) ||
+    /\b(provocare|dificil|greu)\b/.test(qNorm)
+  ) {
     const opts = [
       "Marketplace onboarding amid shifting systems - she aligned stakeholders and stabilized operations.",
       "Conflicting integrations and timelines - she mapped risks, reset scope, and restored predictability.",
@@ -171,78 +190,121 @@ function smartBoundaryAndInterview(qLower) {
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  // ----- New: Should we hire her? / Salary -----
-  if (/\b(should\s+we\s+hire|hire\s+her)\b/.test(q)) {
+  
+  // ----- Should we hire her? (English, German, Romanian) -----
+  if (
+    /\b(should\s+we\s+hire|hire\s+her)\b/.test(qNorm) ||
+    /\b(sollen\s+wir\s+sie\s+einstellen|einstellen)\b/.test(qNorm) ||
+    /\b(sa\s+o\s+angajam|angajam)\b/.test(qNorm)
+  ) {
     const opts = [
-      "Of course.Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
+      "Of course. Hiring her means gaining someone who cuts noise, creates clarity, and executes reliably.",
       "If the goal is precision, adaptability, and structured delivery - the hire is self-evident.",
       "Her track record shows: she builds systems, translates vision into execution, and sustains outcomes."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(salary|compensation|pay)\b/.test(q)) {
+  
+  // ----- SALARY (English, German, Romanian) -----
+  if (
+    /\b(salary|compensation|pay)\b/.test(qNorm) ||
+    /\b(gehalt|bezahlung|vergutung)\b/.test(qNorm) ||
+    /\b(salariu|compensare|remuneratie)\b/.test(qNorm)
+  ) {
     const opts = [
       "Salary expectations depend on role scope and market benchmarks - best aligned during formal discussions.",
       "Compensation is context-driven. Alignment with responsibilities and market standards is the right frame.",
-      "That’s a structured conversation for the hiring stage - tied to scope, value, and benchmarks."
+      "That's a structured conversation for the hiring stage - tied to scope, value, and benchmarks."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  // ----- New: Contact details -----
-  if (/\b(contact|email|phone)\b/.test(q)) {
+  
+  // ----- CONTACT DETAILS (English, German, Romanian) -----
+  if (
+    /\b(contact|email|phone)\b/.test(qNorm) ||
+    /\b(kontakt|telefon)\b/.test(qNorm) ||
+    /\b(contact|telefon|adresa)\b/.test(qNorm)
+  ) {
     return "Her contact details are provided in the original CV PDF you received.";
   }
-  // ----- New: Thinking / style / how she works -----
-  if (/\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(q)) {
+  
+  // ----- HOW SHE THINKS (English, German, Romanian) -----
+  if (
+    /\b(how\s+does\s+she\s+think|thinking\s+style|how\s+she\s+thinks|thought\s+process)\b/.test(qNorm) ||
+    /\b(wie\s+denkt\s+sie|denkweise)\b/.test(qNorm) ||
+    /\b(cum\s+gandeste|stil\s+de\s+gandire)\b/.test(qNorm)
+  ) {
     const opts = [
       "She thinks in systems: spot patterns fast, frame the problem cleanly, decide with evidence, and communicate the path forward in plain language.",
-      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what’s missing - better than before.",
+      "She thinks fast, connects the unexpected, and solves with sharp clarity. Original, intuitive, and allergic to fluff, she cuts to the core and builds what's missing - better than before.",
       "She connects dots faster than most realize, brings clarity where others stall, and navigates pressure with sharp wit and quiet precision."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(work\s+style|how\s+does\s+she\s+work|how\s+she\s+works|way\s+of\s+working|operating\s+style)\b/.test(q)) {
+  
+  // ----- WORK STYLE (English, German, Romanian) -----
+  if (
+    /\b(work\s+style|how\s+does\s+she\s+work|how\s+she\s+works|way\s+of\s+working|operating\s+style)\b/.test(qNorm) ||
+    /\b(arbeitsstil|wie\s+arbeitet\s+sie)\b/.test(qNorm) ||
+    /\b(stil\s+de\s+lucru|cum\s+lucreaza)\b/.test(qNorm)
+  ) {
     const opts = [
       "She absorbs context fast, spots what actually matters, and moves from ambiguity to action before the room agrees what the problem is.",
-      "She mixes strategic focus with creative improvisation - balancing precision when it counts and speed when it’s needed."
+      "She mixes strategic focus with creative improvisation - balancing precision when it counts and speed when it's needed."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(communication\s+style|how\s+she\s+communicates|communicator)\b/.test(q)) {
+  
+  // ----- COMMUNICATION STYLE (English, German, Romanian) -----
+  if (
+    /\b(communication\s+style|how\s+she\s+communicates|communicator)\b/.test(qNorm) ||
+    /\b(kommunikationsstil|wie\s+kommuniziert\s+sie)\b/.test(qNorm) ||
+    /\b(stil\s+de\s+comunicare|cum\s+comunica)\b/.test(qNorm)
+  ) {
     const opts = [
       "She communicates with intent: every word serves a purpose. Whether she's crafting strategy or giving feedback, her style is direct, smart, and tuned to the audience - always clear, never performative.",
-      "Her communication cuts through noise. She doesn’t over-explain or sugarcoat. Instead, she brings structure, nuance, and the kind of clarity that turns complexity into alignment."
+      "Her communication cuts through noise. She doesn't over-explain or sugarcoat. Instead, she brings structure, nuance, and the kind of clarity that turns complexity into alignment."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(decision\s+making|decision\-making|how\s+she\s+decides|decision\s+style)\b/.test(q)) {
+  
+  // ----- DECISION MAKING (English, German, Romanian) -----
+  if (
+    /\b(decision\s+making|decision\-making|how\s+she\s+decides|decision\s+style)\b/.test(qNorm) ||
+    /\b(entscheidungsfindung|wie\s+entscheidet\s+sie)\b/.test(qNorm) ||
+    /\b(luarea\s+deciziilor|cum\s+decide)\b/.test(qNorm)
+  ) {
     const opts = [
       "She makes fast, informed decisions when speed matters - and slows down when precision is required. She combines instinct with analysis, never defaulting to autopilot.",
-      "She’s not afraid to take responsibility. Her decisions are driven by relevance, not trends, and by asking the right questions."
+      "She's not afraid to take responsibility. Her decisions are driven by relevance, not trends, and by asking the right questions."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
-  if (/\b(what\s+is\s+she\s+like|who\s+is\s+she|describe\s+her|her\s+essence)\b/.test(q)) {
+  
+  // ----- WHO IS SHE (English, German, Romanian) -----
+  if (
+    /\b(what\s+is\s+she\s+like|who\s+is\s+she|describe\s+her|her\s+essence)\b/.test(qNorm) ||
+    /\b(wie\s+ist\s+sie|wer\s+ist\s+sie)\b/.test(qNorm) ||
+    /\b(cum\s+este\s+ea|cine\s+este\s+ea)\b/.test(qNorm)
+  ) {
     const opts = [
-      "She’s the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn’t dare to. Wit like flint, focus when it counts, and a restlessness that doesn’t settle for ‘fine’. She turns systems into stories, stories into action, and action into results.",
-      "Think strategic operator meets pattern disruptor. She thrives in ambiguity, doesn’t wait for permission, and doesn’t waste time. High-context, high-output, and with an amazing sense of humor."
+      "She's the person who asks the question no one else thought to. Who finishes what others start- or starts what others wouldn't dare to. Wit like flint, focus when it counts, and a restlessness that doesn't settle for 'fine'. She turns systems into stories, stories into action, and action into results.",
+      "Think strategic operator meets pattern disruptor. She thrives in ambiguity, doesn't wait for permission, and doesn't waste time. High-context, high-output, and with an amazing sense of humor."
     ];
     return opts[Math.floor(Math.random()*opts.length)];
   }
+  
   return null;
 }
-// ---------- Variants ----------
+// ---------- Variants (BULLETS REMOVED - ONLY PARAGRAPHS) ----------
 const VARIANTS = [
-  { id: 'bullets3', instructions: 'Answer in 3 tight bullets (10–16 words each). No intro/outro.' },
-  { id: 'impactBullets', instructions: 'Provide 2 action bullets + 1 outcome bullet. Max 16 words each.' },
   { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
   { id: 'shortPara', instructions: 'One short paragraph, 2–3 sentences with strong verbs; avoid filler.' }
 ];
 const rrMap = new Map();
 function pickVariant(question, preferBullets) {
-  const pool = preferBullets
-    ? VARIANTS.filter(v => v.id === 'bullets3' || v.id === 'impactBullets')
-    : VARIANTS;
+  // Note: preferBullets parameter is now ignored since we only have paragraph variants
+  const pool = VARIANTS;
   const key = (question || '').trim().toLowerCase();
   const n = (rrMap.get(key) || 0) + 1;
   rrMap.set(key, n);
@@ -260,7 +322,7 @@ function enforceThirdPerson(text) {
     .replace(/\bI am\b/gi, 'She is')
     .replace(/\bI was\b/gi, 'She was')
     .replace(/\bI have\b/gi, 'She has')
-    .replace(/\bI’ve\b/gi, 'She has')
+    .replace(/\bI've\b/gi, 'She has')
     .replace(/\bI\b/gi, 'She')
     .replace(/\bmy\b/gi, 'her')
     .replace(/\bme\b/gi, 'her');
@@ -280,14 +342,14 @@ app.post('/chat', async (req, res) => {
       return res.json({ answer: "Please ask a question." });
     }
     if (!KB.length) {
-      return res.json({ answer: "I don't have Cristina’s CV context loaded yet." });
+      return res.json({ answer: "I don't have Cristina's CV context loaded yet." });
     }
     const qLower = message.toLowerCase();
     const desiredTag = detectTag(qLower);
     const isCompany = COMPANY_TAGS.includes(desiredTag || '');
     const isSection = SECTION_TAGS.includes(desiredTag || '');
-    // 1) Overrides (your existing custom replies)
-    const override = smartBoundaryAndInterview(qLower);
+    // 1) Overrides (your existing custom replies - NOW MULTILINGUAL)
+    const override = smartBoundaryAndInterview(message); // Pass original message, not qLower
     if (override) return res.json({ answer: override });
     // 1.5) Interview clusters (your long-form Q&A from interview.json)
     const canned = interviewAnswer(message);
@@ -321,11 +383,11 @@ app.post('/chat', async (req, res) => {
     const variant = pickVariant(message, isCompany);
     // 7) Persona prompt
     const personaSystem =
-      "You are presenting Cristina Merisoiu’s professional CV as a chatbot for recruiters.\n" +
-      "Never use first person (‘I’, ‘me’, ‘my’). Always refer to Cristina in third person (‘Cristina’, ‘she’, ‘her’).\n" +
+      "You are presenting Cristina Merisoiu's professional CV as a chatbot for recruiters.\n" +
+      "Never use first person ('I', 'me', 'my'). Always refer to Cristina in third person ('Cristina', 'she', 'her').\n" +
       "Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.\n" +
       "Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.\n" +
-      "Avoid buzzwords and filler. Never use the word ‘chaos’.\n" +
+      "Avoid buzzwords and filler. Never use the word 'chaos'.\n" +
       "Global length guideline: ~90 words max unless asked otherwise.";
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
