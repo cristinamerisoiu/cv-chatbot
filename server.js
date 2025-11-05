@@ -45,10 +45,13 @@ function normalize(s = '') {
 // ---------- Better language guess (no API; robust to missing diacritics) ----------
 function guessLang(text = '') {
   const t = normalize(text);
-  if (/[äöüß]/i.test(text)) return 'de';
-  if (/[ăâîșşţțșț]/i.test(text)) return 'ro';
-  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|faehigkeiten|werkzeuge)\b/.test(t)) return 'de';
-  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|munca|abilitati|fluxuri)\b/.test(t)) return 'ro';
+  
+  // German words (common + specific)
+  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|faehigkeiten|werkzeuge|alt|einstellen|gehalt)\b/.test(t)) return 'de';
+  
+  // Romanian words (common + specific) - EXPANDED
+  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|munca|abilitati|fluxuri|cati|ani|varsta|are|copii|casatorita|relatie|salariu)\b/.test(t)) return 'ro';
+  
   return 'en';
 }
 // ---------- Interview answer (i18n, diacritic-insensitive) ----------
@@ -609,4 +612,5 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
