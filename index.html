@@ -20,27 +20,36 @@
         <div class="mark" aria-hidden="true">C</div>
         <div class="titles">
           <h1 class="title">Cristina,Beyond the Résumé</h1>
-          <p class="subtitle">Ask about roles, skills, tools - or interview-style questions.</p>
         </div>
       </div>
+      <button id="help-btn" class="help-btn" aria-label="Help" title="Sample questions">?</button>
     </header>
-
-
-
+    
+    <!-- Help Modal (hidden by default) -->
+    <div id="help-modal" class="help-modal hidden">
+      <div class="help-content">
+        <div class="help-header">
+          <h3>Sample Questions</h3>
+          <button id="close-help" class="close-btn" aria-label="Close">×</button>
+        </div>
+        <div class="help-body">
+          <p class="help-intro">Try asking questions like:</p>
+          <button class="sample-question" data-question="Walk me through her resume">Walk me through her resume</button>
+          <button class="sample-question" data-question="What are her strengths?">What are her strengths?</button>
+          <button class="sample-question" data-question="Tell me about her work at gannaca">Tell me about her work at gannaca</button>
+          <button class="sample-question" data-question="What languages does she speak?">What languages does she speak?</button>
+          <button class="sample-question" data-question="What's her biggest achievement?">What's her biggest achievement?</button>
+          <button class="sample-question" data-question="How does she handle challenges?">How does she handle challenges?</button>
+        </div>
+      </div>
+    </div>
+    
     <section id="chat-box" class="chat" aria-live="polite"></section>
-
     <form id="chat-form" class="composer" autocomplete="off">
       <input id="user-input" type="text" placeholder="Ask about experience, skills, outcomes…" aria-label="Your question" />
       <button type="submit" aria-label="Send">Send</button>
     </form>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
