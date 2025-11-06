@@ -109,7 +109,7 @@ function detectTag(qLower) {
 function smartBoundaryAndInterview(question) {
   const qNorm = normalize(question);
   const lang = guessLang(question); // Detect language FIRST
-console.log('Detected language:', lang, 'for question:', question); // ADD THIS LINE FOR DEBUGGING
+  console.log('Detected language:', lang, 'for question:', question); // ADD THIS LINE FOR DEBUGGING
   
   // ----- Personal boundaries: AGE (English, German, Romanian) -----
   if (
@@ -465,9 +465,7 @@ console.log('Detected language:', lang, 'for question:', question); // ADD THIS 
     return pool[Math.floor(Math.random() * pool.length)];
   }
   
-  return null;
-}
-// ----- LANGUAGES (English, German, Romanian) -----
+  // ----- LANGUAGES (English, German, Romanian) -----
   if (
     /\b(what\s+languages|which\s+languages|languages\s+does\s+she\s+speak|speak\s+what\s+languages)\b/.test(qNorm) ||
     /\b(welche\s+sprachen|sprachen\s+spricht|spricht\s+sie)\b/.test(qNorm) ||
@@ -480,14 +478,14 @@ console.log('Detected language:', lang, 'for question:', question); // ADD THIS 
         "Romanian is her native language. She's fluent in English and proficient in German."
       ],
       de: [
-        "Sie ist rumänische Muttersprachlerin, fließend in Englisch und versiert in Deutsch.",
-        "Cristina spricht Rumänisch (Muttersprache), Englisch (fließend) und Deutsch (versiert).",
-        "Rumänisch ist ihre Muttersprache. Sie spricht fließend Englisch und versiert Deutsch."
+        "Sie ist rumänische Muttersprachlerin, fließend in Englisch und Deutsch.",
+        "Cristina spricht Rumänisch (Muttersprache), Englisch (fließend) und Deutsch (fließend).",
+        "Rumänisch ist ihre Muttersprache. Sie spricht fließend Englisch und Deutsch."
       ],
       ro: [
-        "Este vorbitor nativ de română, fluent în engleză și cu cunoștințe avansate de germană.",
-        "Cristina vorbește română (nativ), engleză (fluent) și germană (avansat).",
-        "Româna este limba ei nativă. Vorbește fluent engleza și are cunoștințe avansate de germană."
+        "Vorbeste romana nativ, fluenta în engleză si germana.",
+        "Cristina vorbește română (nativ), engleză (fluent) și germană (fluent).",
+        "Româna este limba ei nativă. Vorbește fluent engleza și germana."
       ]
     };
     const pool = opts[lang] || opts.en;
@@ -495,6 +493,7 @@ console.log('Detected language:', lang, 'for question:', question); // ADD THIS 
   }
   
   return null;
+}
 // ---------- Variants (BULLETS REMOVED - ONLY PARAGRAPHS) ----------
 const VARIANTS = [
   { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
@@ -640,6 +639,7 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
