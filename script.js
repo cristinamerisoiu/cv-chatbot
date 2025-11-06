@@ -15,7 +15,7 @@ function detectBrowserLanguage() {
 
 // --- Multilingual greetings (cheeky) ---
 const GREETINGS = {
-  en: "Hi there. I'm Cristina's CV, but interactive. Ask me anything about her work. I won't bite.",
+  en: "Hi there. I'm Cristina's CV, but interactive.I speak English (obviously), German, and Romanian. Ask me anything about her work. I won't bite.",
   de: "Hallo. Ich bin Cristinas Lebenslauf, nur interaktiv. Frag mich was du willst. Ich beiße nicht.",
   ro: "Salut. Sunt CV-ul Cristinei, dar interactiv. Întreabă-mă orice despre munca ei. Nu mușc."
 };
@@ -141,3 +141,4 @@ form.addEventListener("submit", async (e) => {
 const userLang = detectBrowserLanguage();
 const greeting = GREETINGS[userLang] || GREETINGS.en;
 addMessage("Cristina, Distilled", greeting);
+
