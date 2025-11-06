@@ -216,6 +216,36 @@ form.addEventListener("submit", async (e) => {
 
 // --- Initial greeting + sample questions ---
 const userLang = detectBrowserLanguage();
+// Help Modal functionality
+const helpBtn = document.getElementById('help-btn');
+const helpModal = document.getElementById('help-modal');
+const closeHelp = document.getElementById('close-help');
+
+helpBtn.addEventListener('click', () => {
+  helpModal.classList.remove('hidden');
+});
+
+closeHelp.addEventListener('click', () => {
+  helpModal.classList.add('hidden');
+});
+
+// Close modal when clicking outside
+helpModal.addEventListener('click', (e) => {
+  if (e.target === helpModal) {
+    helpModal.classList.add('hidden');
+  }
+});
+
+// Handle sample question clicks in modal
+document.querySelectorAll('.sample-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const question = btn.getAttribute('data-question');
+    document.getElementById('user-input').value = question;
+    helpModal.classList.add('hidden');
+    document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+  });
+});
 const greeting = GREETINGS[userLang] || GREETINGS.en;
 addMessage("Cristina, Distilled", greeting);
 showSampleQuestions(userLang);
+
