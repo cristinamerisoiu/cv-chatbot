@@ -495,7 +495,6 @@ console.log('Detected language:', lang, 'for question:', question); // ADD THIS 
   }
   
   return null;
-}
 // ---------- Variants (BULLETS REMOVED - ONLY PARAGRAPHS) ----------
 const VARIANTS = [
   { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
@@ -641,6 +640,7 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
