@@ -42,23 +42,42 @@ function normalize(s = '') {
     .replace(/\s+/g, ' ')
     .trim();
 }
-// ---------- Better language guess (no API; robust to missing diacritics) ----------
-function guessLang(text = '') {
-  const t = normalize(text);
-  
-  // German words (common + specific) - FIXED AND EXPANDED
-  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|sprachen|spricht|faehigkeiten|werkzeuge|alt|alter|einstellen|gehalt|kinder|kind)\b/.test(t)) return 'de';
-  
-  // Romanian words (common + specific) - EXPANDED
-  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|limbi|munca|vorbeste|abilitati|fluxuri|cati|ani|varsta|are|copii|copil|casatorita|relatie|salariu)\b/.test(t)) return 'ro';
-  
-  return 'en';
+// ---------- OpenAI Language Detection ----------
+async function detectLanguage(text = '') {
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a language detector. Respond with ONLY one word: "en" for English, "de" for German, or "ro" for Romanian. No explanation, no punctuation, just the two-letter code.'
+        },
+        {
+          role: 'user',
+          content: text
+        }
+      ],
+      temperature: 0,
+      max_tokens: 5
+    });
+    
+    const detected = response.choices[0].message.content.trim().toLowerCase();
+    
+    // Validate response
+    if (detected === 'en' || detected === 'de' || detected === 'ro') {
+      return detected;
+    }
+    
+    return 'en'; // Default to English if unclear
+  } catch (error) {
+    console.error('Language detection error:', error);
+    return 'en'; // Fallback to English on error
+  }
 }
 // ---------- Interview answer (i18n, diacritic-insensitive) ----------
-function interviewAnswer(question) {
+function interviewAnswer(question, lang) {
   if (!INTERVIEW.clusters?.length) return null;
   const qNorm = normalize(question);
-  const lang = guessLang(qNorm);
   const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
   const ansKey = lang === 'de' ? 'answers_de' : lang === 'ro' ? 'answers_ro' : 'answers_en';
   for (const c of INTERVIEW.clusters) {
@@ -106,10 +125,8 @@ function detectTag(qLower) {
   return null;
 }
 // ---------- Smart boundaries + interview (rotating) - FULLY MULTILINGUAL ----------
-function smartBoundaryAndInterview(question) {
+function smartBoundaryAndInterview(question, lang) {
   const qNorm = normalize(question);
-  const lang = guessLang(question); // Detect language FIRST
-  console.log('Detected language:', lang, 'for question:', question); // ADD THIS LINE FOR DEBUGGING
   
   // ----- Personal boundaries: AGE (English, German, Romanian) -----
   if (
@@ -501,20 +518,17 @@ const VARIANTS = [
 ];
 const rrMap = new Map();
 function pickVariant(question, preferBullets) {
-  // Note: preferBullets parameter is now ignored since we only have paragraph variants
   const pool = VARIANTS;
   const key = (question || '').trim().toLowerCase();
   const n = (rrMap.get(key) || 0) + 1;
   rrMap.set(key, n);
   return pool[(n - 1) % pool.length];
 }
-// Hard cap with a bit more room for section lists
 function enforceShort(text, maxWords = 90) {
   const words = text.trim().split(/\s+/);
   if (words.length <= maxWords) return text.trim();
   return words.slice(0, maxWords).join(' ') + '…';
 }
-// Belt-and-suspenders: strip first-person if it ever slips
 function enforceThirdPerson(text) {
   return text
     .replace(/\bI am\b/gi, 'She is')
@@ -527,7 +541,6 @@ function enforceThirdPerson(text) {
 }
 // ---------- Health ----------
 app.get('/', (req, res) => {
-  // UPDATED: Serve index.html on root for chatbot UI
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 app.get('/ping', (_, res) => res.json({ ok: true, chunks: KB.length }));
@@ -542,22 +555,31 @@ app.post('/chat', async (req, res) => {
     if (!KB.length) {
       return res.json({ answer: "I don't have Cristina's CV context loaded yet." });
     }
+    
+    // Detect language using OpenAI
+    const detectedLang = await detectLanguage(message);
+    console.log('Detected language:', detectedLang, 'for question:', message);
+    
     const qLower = message.toLowerCase();
     const desiredTag = detectTag(qLower);
     const isCompany = COMPANY_TAGS.includes(desiredTag || '');
     const isSection = SECTION_TAGS.includes(desiredTag || '');
-    // 1) Overrides (your existing custom replies - NOW FULLY MULTILINGUAL)
-    const override = smartBoundaryAndInterview(message); // Pass original message, not qLower
+    
+    // 1) Overrides (boundary checks - now with detected language)
+    const override = smartBoundaryAndInterview(message, detectedLang);
     if (override) return res.json({ answer: override });
-    // 1.5) Interview clusters (your long-form Q&A from interview.json)
-    const canned = interviewAnswer(message);
+    
+    // 1.5) Interview clusters
+    const canned = interviewAnswer(message, detectedLang);
     if (canned) return res.json({ answer: canned });
+    
     // 2) Embed
     const emb = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
     });
     const qemb = emb.data[0].embedding;
+    
     // 3) Score
     const allScored = KB.map(it => ({
       id: it.id,
@@ -565,6 +587,7 @@ app.post('/chat', async (req, res) => {
       text: it.text,
       score: cosineSim(qemb, it.embedding),
     }));
+    
     // 4) Strict scope
     let pool = allScored;
     if (desiredTag) {
@@ -574,11 +597,14 @@ app.post('/chat', async (req, res) => {
         return res.json(debug ? { answer: polite, used_chunks: [] } : { answer: polite });
       }
     }
+    
     // 5) Top-3
     const topK = pool.sort((a, b) => b.score - a.score).slice(0, 3);
     const contextBlocks = topK.map((s, i) => `[${i + 1} :: ${s.tag}] ${s.text}`);
+    
     // 6) Variant
     const variant = pickVariant(message, isCompany);
+    
     // 7) Persona prompt
     const personaSystem =
       "You are presenting Cristina Merisoiu's professional CV as a chatbot for recruiters.\n" +
@@ -639,10 +665,3 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
-
-
-
-
-
