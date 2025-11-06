@@ -467,6 +467,35 @@ console.log('Detected language:', lang, 'for question:', question); // ADD THIS 
   
   return null;
 }
+// ----- LANGUAGES (English, German, Romanian) -----
+  if (
+    /\b(what\s+languages|which\s+languages|languages\s+does\s+she\s+speak|speak\s+what\s+languages)\b/.test(qNorm) ||
+    /\b(welche\s+sprachen|sprachen\s+spricht|spricht\s+sie)\b/.test(qNorm) ||
+    /\b(ce\s+limbi|limbi\s+vorbeste|vorbeste\s+ce\s+limbi)\b/.test(qNorm)
+  ) {
+    const opts = {
+      en: [
+        "She's a native Romanian speaker, fluent in English, and proficient in German.",
+        "Cristina speaks Romanian (native), English (fluent), and German (proficient).",
+        "Romanian is her native language. She's fluent in English and proficient in German."
+      ],
+      de: [
+        "Sie ist rumänische Muttersprachlerin, fließend in Englisch und versiert in Deutsch.",
+        "Cristina spricht Rumänisch (Muttersprache), Englisch (fließend) und Deutsch (versiert).",
+        "Rumänisch ist ihre Muttersprache. Sie spricht fließend Englisch und versiert Deutsch."
+      ],
+      ro: [
+        "Este vorbitor nativ de română, fluent în engleză și cu cunoștințe avansate de germană.",
+        "Cristina vorbește română (nativ), engleză (fluent) și germană (avansat).",
+        "Româna este limba ei nativă. Vorbește fluent engleza și are cunoștințe avansate de germană."
+      ]
+    };
+    const pool = opts[lang] || opts.en;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  
+  return null;
+}
 // ---------- Variants (BULLETS REMOVED - ONLY PARAGRAPHS) ----------
 const VARIANTS = [
   { id: 'twoSentences', instructions: 'Answer in 2 compact sentences, max 40 words total. No list formatting.' },
@@ -612,6 +641,7 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
