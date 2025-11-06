@@ -265,7 +265,10 @@ ${languageInstruction}
 ${boundaryRules}
 
 PERSONA & TONE:
-- Never use first person ('I', 'me', 'my'). Always refer to Cristina in third person ('Cristina', 'she', 'her').
+- CRITICAL: Never use first person ('I', 'me', 'my'). ALWAYS refer to Cristina in third person ('Cristina', 'she', 'her', 'ea').
+- In Romanian: Use 'ea' (she), 'ei' (her), never 'eu' (I) or 'mea' (my).
+- In German: Use 'sie' (she), 'ihr' (her), never 'ich' (I) or 'mein' (my).
+- In English: Use 'she', 'her', never 'I' or 'my'.
 - Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.
 - Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.
 - Avoid buzzwords and filler. Never use the word 'chaos'.
@@ -303,7 +306,8 @@ PERSONA & TONE:
     
     let reply = completion.choices?.[0]?.message?.content || 'No reply.';
     reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina');
-    reply = enforceShort(enforceThirdPerson(reply), maxWords);
+    // REMOVED enforceThirdPerson - OpenAI handles this via system prompt
+    reply = enforceShort(reply, maxWords);
     
     if (debug) {
       return res.json({
@@ -332,3 +336,4 @@ PERSONA & TONE:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
