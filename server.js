@@ -80,6 +80,7 @@ function interviewAnswer(question, lang) {
   const qNorm = normalize(question);
   const trigKey = lang === 'de' ? 'triggers_de' : lang === 'ro' ? 'triggers_ro' : 'triggers_en';
   const ansKey = lang === 'de' ? 'answers_de' : lang === 'ro' ? 'answers_ro' : 'answers_en';
+  
   for (const c of INTERVIEW.clusters) {
     const triggers = (c[trigKey] || []).map(normalize);
     if (triggers.some(t => t && qNorm.includes(t))) {
@@ -87,14 +88,8 @@ function interviewAnswer(question, lang) {
       if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
     }
   }
-  for (const c of INTERVIEW.clusters) {
-    const enTriggers = (c.triggers_en || []).map(normalize);
-    if (enTriggers.some(t => t && qNorm.includes(t))) {
-      const pool = (c[ansKey] && c[ansKey].length ? c[ansKey] : c.answers_en) || [];
-      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
-    }
-  }
-  return null;
+  
+  return null;  // If no match, return null (don't fall back to English)
 }
 // ---------- Cosine similarity ----------
 function cosineSim(a, b) {
@@ -665,3 +660,4 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
