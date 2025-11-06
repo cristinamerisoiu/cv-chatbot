@@ -1,5 +1,4 @@
-// Frontend with simple Markdown-like rendering for bullets, numbers, links.
-// No backend change needed.
+// Frontend with design improvements: typing indicator, sample questions, avatar
 const GPT_BACKEND_URL = 'https://cv-chatbot-f0ej.onrender.com/chat';
 const chatBox = document.getElementById("chat-box");
 const form = document.getElementById("chat-form");
@@ -13,11 +12,33 @@ function detectBrowserLanguage() {
   return 'en';
 }
 
-// --- Multilingual greetings (cheeky) ---
+// --- Multilingual greetings ---
 const GREETINGS = {
-  en: "Hi there. I'm Cristina's CV, but interactive.I speak English (obviously), German, and Romanian. Ask me anything about her work. I won't bite.",
+  en: "Hi there. I'm Cristina's CV, but interactive. I speak English, German, and Romanian. Ask me anything about her work. I won't bite.",
   de: "Hallo. Ich bin Cristinas Lebenslauf, nur interaktiv. Frag mich was du willst. Ich beiße nicht.",
   ro: "Salut. Sunt CV-ul Cristinei, dar interactiv. Întreabă-mă orice despre munca ei. Nu mușc."
+};
+
+// --- Sample questions (multilingual) ---
+const SAMPLE_QUESTIONS = {
+  en: [
+    "What are her strengths?",
+    "Tell me about her role at gannaca",
+    "What challenges has she solved?",
+    "Which languages does she speak?"
+  ],
+  de: [
+    "Was sind ihre Stärken?",
+    "Erzähl mir von ihrer Rolle bei gannaca",
+    "Welche Herausforderungen hat sie gelöst?",
+    "Welche Sprachen spricht sie?"
+  ],
+  ro: [
+    "Care sunt punctele ei tari?",
+    "Spune-mi despre rolul ei la gannaca",
+    "Ce provocări a rezolvat?",
+    "Ce limbi vorbește?"
+  ]
 };
 
 // --- Utils: safe HTML ---
@@ -29,24 +50,17 @@ function escapeHtml(s = '') {
 }
 
 // --- Tiny Markdown-ish to HTML converter ---
-// Supports: bullet lists (-, *, •), numbered lists (1.), paragraphs, **bold**, _italic_, links, code blocks.
 function toHtml(md = '') {
-  // 1) escape first
   let text = escapeHtml(md);
   
-  // 2) code blocks ```...```
   text = text.replace(/```([\s\S]*?)```/g, (_m, code) => {
     return `<pre><code>${code}</code></pre>`;
   });
   
-  // 3) inline bold / italic (keep it simple)
   text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/_(.+?)_/g, '<em>$1</em>');
-  
-  // 4) linkify
   text = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
   
-  // 5) lists + paragraphs
   const lines = text.split(/\r?\n/);
   const out = [];
   let inUl = false, inOl = false;
@@ -59,14 +73,12 @@ function toHtml(md = '') {
   for (let raw of lines) {
     const line = raw.trim();
     
-    // blank line → close any open list, insert small spacing
     if (!line) {
       closeLists();
       out.push('<p style="margin:6px 0;"></p>');
       continue;
     }
     
-    // bullet list: -, *, •
     let m = line.match(/^[-*•]\s+(.*)$/);
     if (m) {
       if (inOl) { out.push('</ol>'); inOl = false; }
@@ -75,7 +87,6 @@ function toHtml(md = '') {
       continue;
     }
     
-    // numbered list: 1. 2. ...
     m = line.match(/^\d+\.\s+(.*)$/);
     if (m) {
       if (inUl) { out.push('</ul>'); inUl = false; }
@@ -84,7 +95,6 @@ function toHtml(md = '') {
       continue;
     }
     
-    // normal text line
     closeLists();
     out.push(`<p>${line}</p>`);
   }
@@ -100,6 +110,15 @@ function addMessage(sender, msg, who = 'bot') {
   
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
+  
+  // Add avatar for bot messages
+  if (who === 'bot') {
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.textContent = 'C';
+    wrap.appendChild(avatar);
+  }
+  
   bubble.innerHTML = `<span class="sender">${sender}</span>${toHtml(msg)}`;
   
   wrap.appendChild(bubble);
@@ -107,6 +126,55 @@ function addMessage(sender, msg, who = 'bot') {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// --- Typing indicator ---
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg bot typing-indicator';
+  wrap.id = 'typing-indicator';
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = 'C';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  chatBox.appendChild(wrap);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function hideTyping() {
+  const typing = document.getElementById('typing-indicator');
+  if (typing) typing.remove();
+}
+
+// --- Sample questions UI ---
+function showSampleQuestions(lang) {
+  const questions = SAMPLE_QUESTIONS[lang] || SAMPLE_QUESTIONS.en;
+  
+  const wrap = document.createElement('div');
+  wrap.className = 'sample-questions';
+  wrap.innerHTML = '<p class="sample-label">Try asking:</p>';
+  
+  questions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'sample-question';
+    btn.textContent = q;
+    btn.onclick = () => {
+      input.value = q;
+      form.dispatchEvent(new Event('submit'));
+    };
+    wrap.appendChild(btn);
+  });
+  
+  chatBox.appendChild(wrap);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// --- Backend communication ---
 async function askBackend(question) {
   const res = await fetch(GPT_BACKEND_URL, {
     method: 'POST',
@@ -125,20 +193,29 @@ form.addEventListener("submit", async (e) => {
   const userMsg = input.value.trim();
   if (!userMsg) return;
   
+  // Remove sample questions after first interaction
+  const samples = document.querySelector('.sample-questions');
+  if (samples) samples.remove();
+  
   addMessage("You", userMsg, 'you');
   input.value = "";
   
+  // Show typing indicator
+  showTyping();
+  
   try {
     const reply = await askBackend(userMsg);
+    hideTyping();
     addMessage("Cristina, Distilled", reply, 'bot');
   } catch (err) {
+    hideTyping();
     addMessage("Cristina, Distilled", "Oops — couldn't reach the server. Is it running?", 'bot');
     console.error(err);
   }
 });
 
-// --- Initial greeting (multilingual, fun & witty) ---
+// --- Initial greeting + sample questions ---
 const userLang = detectBrowserLanguage();
 const greeting = GREETINGS[userLang] || GREETINGS.en;
 addMessage("Cristina, Distilled", greeting);
-
+showSampleQuestions(userLang);
