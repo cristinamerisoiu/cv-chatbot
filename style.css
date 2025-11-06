@@ -1,9 +1,4 @@
-/* Minimal, elegant, recruiter-friendly UI
-   - Inter font
-   - Neutral palette
-   - Lots of whitespace
-   - Subtle contrast between roles
-*/
+/* Minimal, elegant, recruiter-friendly UI with new design features */
 
 :root {
   --bg: #ffffff;
@@ -17,10 +12,9 @@
   --bot-ink: #e8edf5;
   --you-ink: #0b0f14;
 
-  --accent: #0ea5e9; /* subtle sky blue for focus/links */
+  --accent: #0ea5e9;
   --radius: 14px;
 
-  /* hero background fallback gradient for when image hasn't loaded yet */
   --hero-fallback: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.15));
 }
 
@@ -56,32 +50,28 @@ body {
   position: relative;
 }
 
-/* ========== FULL-BLEED HERO BACKGROUND (TOP HALF) ========== */
-/* Shows CMheader.jpg behind the UI, covering the top 50% of the viewport.
-   No HTML needed—pure CSS. */
+/* ========== FULL-BLEED HERO BACKGROUND ========== */
 body::before {
   content: "";
   position: fixed;
-  z-index: 0;              /* behind everything */
+  z-index: 0;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 50vh;            /* upper half of screen */
+  height: 50vh;
   background-image:
     var(--hero-fallback),
-    url("CMheader.jpg");   /* make sure file exists at site root */
+    url("CMheader.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  pointer-events: none;    /* never block clicks */
-  /* soft vignette at the bottom edge to blend into page */
+  pointer-events: none;
   box-shadow: inset 0 -80px 120px -60px rgba(0,0,0,.35);
 }
 
-/* Keep the chat app exactly as-is (unchanged size/layout) */
 .app {
   position: relative;
-  z-index: 1;              /* above the hero background */
+  z-index: 1;
   width: min(880px, 100%);
   background: var(--panel);
   border: 1px solid var(--line);
@@ -122,12 +112,33 @@ body::before {
   scroll-behavior: smooth;
 }
 
+/* ========== MESSAGES WITH AVATAR ========== */
 .msg {
   display: flex;
+  align-items: flex-start;
+  gap: 10px;
   margin: 12px 0;
 }
 
-.msg.you { justify-content: flex-end; }
+.msg.you { 
+  justify-content: flex-end; 
+}
+
+/* Avatar (only for bot messages) */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--bg);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
 .msg .bubble {
   max-width: 78%;
   padding: 12px 14px;
@@ -178,6 +189,73 @@ body::before {
   border: 1px solid var(--line);
 }
 
+/* ========== TYPING INDICATOR ========== */
+.typing-dots {
+  display: flex;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bot-ink);
+  opacity: 0.4;
+  animation: typing-bounce 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { 
+    transform: translateY(0); 
+    opacity: 0.4;
+  }
+  30% { 
+    transform: translateY(-8px); 
+    opacity: 1;
+  }
+}
+
+/* ========== SAMPLE QUESTIONS ========== */
+.sample-questions {
+  margin: 16px 0;
+  padding: 0;
+}
+
+.sample-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.sample-question {
+  display: inline-block;
+  margin: 4px 6px 4px 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sample-question:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+  transform: translateY(-1px);
+}
+
+.sample-question:active {
+  transform: translateY(0);
+}
+
 /* Composer */
 .composer {
   display: flex;
@@ -216,4 +294,6 @@ body::before {
 @media (max-width: 520px) {
   .msg .bubble { max-width: 88%; }
   .subtitle { display: none; }
+  .avatar { width: 28px; height: 28px; font-size: 12px; }
+  .sample-question { font-size: 12px; padding: 6px 12px; }
 }
