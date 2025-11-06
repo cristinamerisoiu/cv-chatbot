@@ -151,28 +151,7 @@ function hideTyping() {
   if (typing) typing.remove();
 }
 
-// --- Sample questions UI ---
-function showSampleQuestions(lang) {
-  const questions = SAMPLE_QUESTIONS[lang] || SAMPLE_QUESTIONS.en;
-  
-  const wrap = document.createElement('div');
-  wrap.className = 'sample-questions';
-  wrap.innerHTML = '<p class="sample-label">Try asking:</p>';
-  
-  questions.forEach(q => {
-    const btn = document.createElement('button');
-    btn.className = 'sample-question';
-    btn.textContent = q;
-    btn.onclick = () => {
-      input.value = q;
-      form.dispatchEvent(new Event('submit'));
-    };
-    wrap.appendChild(btn);
-  });
-  
-  chatBox.appendChild(wrap);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+
 
 // --- Backend communication ---
 async function askBackend(question) {
@@ -248,4 +227,5 @@ document.querySelectorAll('.sample-question').forEach(btn => {
 const greeting = GREETINGS[userLang] || GREETINGS.en;
 addMessage("Cristina, Distilled", greeting);
 showSampleQuestions(userLang);
+
 
