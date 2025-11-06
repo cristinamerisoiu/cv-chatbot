@@ -46,11 +46,11 @@ function normalize(s = '') {
 function guessLang(text = '') {
   const t = normalize(text);
   
-  // German words (common + specific)
-  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|sprachen|spricht|faehigkeiten|werkzeuge|alt|einstellen|gehalt)\b/.test(t)) return 'de';
+  // German words (common + specific) - FIXED AND EXPANDED
+  if (/\b(der|die|das|und|mit|wie|was|sind|ihre|starken|schwachen|warum|arbeitsumfeld|lebenslauf|rollen|sprachen|spricht|faehigkeiten|werkzeuge|alt|alter|einstellen|gehalt|kinder|kind)\b/.test(t)) return 'de';
   
   // Romanian words (common + specific) - EXPANDED
-  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|limbi|munca|vorbeste|abilitati|fluxuri|cati|ani|varsta|are|copii|casatorita|relatie|salariu)\b/.test(t)) return 'ro';
+  if (/\b(este|sunt|care|ce|cum|ea|si|intr|din|de|la|in|puncte|tari|slabe|angajam|mediu|limbi|munca|vorbeste|abilitati|fluxuri|cati|ani|varsta|are|copii|copil|casatorita|relatie|salariu)\b/.test(t)) return 'ro';
   
   return 'en';
 }
@@ -639,6 +639,7 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
