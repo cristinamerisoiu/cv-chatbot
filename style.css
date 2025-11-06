@@ -82,6 +82,9 @@ body::before {
 .header {
   padding: 18px 20px;
   border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .brand {
@@ -103,7 +106,101 @@ body::before {
 }
 
 .title { margin: 0; font-size: 18px; font-weight: 600; }
-.subtitle { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+
+/* Help Button */
+.help-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.help-btn:hover {
+  background: var(--panel);
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+/* Help Modal */
+.help-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.help-modal.hidden {
+  display: none;
+}
+
+.help-content {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.help-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.help-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: var(--panel);
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.help-body {
+  padding: 20px 24px;
+}
+
+.help-intro {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 12px 0;
+}
 
 .chat {
   height: min(66vh, 640px);
@@ -221,18 +318,6 @@ body::before {
 }
 
 /* ========== SAMPLE QUESTIONS ========== */
-.sample-questions {
-  margin: 16px 0;
-  padding: 0;
-}
-
-.sample-label {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0 0 8px 0;
-  font-weight: 500;
-}
-
 .sample-question {
   display: inline-block;
   margin: 4px 6px 4px 0;
@@ -293,7 +378,7 @@ body::before {
 
 @media (max-width: 520px) {
   .msg .bubble { max-width: 88%; }
-  .subtitle { display: none; }
   .avatar { width: 28px; height: 28px; font-size: 12px; }
   .sample-question { font-size: 12px; padding: 6px 12px; }
+  .help-content { max-width: 100%; }
 }
