@@ -115,7 +115,7 @@ function detectTag(qLower) {
   if (/\bskills?\b/.test(qLower)) return 'skills';
   if (/\btools?\b|\bsystems?\b|\bstack\b/.test(qLower)) return 'tools';
   if (/\blanguages?\b|\bromanian\b|\bgerman\b|\benglish\b/.test(qLower)) return 'languages';
-  if /(early experience|voluntary roles|2008|2016)/.test(qLower)) return 'early';
+if (/(early experience|voluntary roles|2008|2016)/.test(qLower)) return 'early';
   if (/\bcertifications?\b|\btraining\b|\bcourses?\b/.test(qLower)) return 'certifications';
   return null;
 }
@@ -373,3 +373,4 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
