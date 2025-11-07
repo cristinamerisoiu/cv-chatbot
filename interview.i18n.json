@@ -1,6 +1,42 @@
 {
   "clusters": [
     {
+  "id": "boundary_age",
+  "triggers_en": ["how old", "age", "years old", "old is"],
+  "triggers_de": ["wie alt", "alter", "alt", "jahre alt"],
+  "triggers_ro": ["cati ani", "varsta", "ani are", "ani"],
+  "answers_en": ["Age isn't the useful signal here. Focus on capability, outcomes, and fit."],
+  "answers_de": ["Das Alter ist hier kein nützlicher Indikator. Fokussieren Sie sich auf Fähigkeiten, Ergebnisse und Passgenauigkeit."],
+  "answers_ro": ["Vârsta nu este un semnal util aici. Concentrați-vă pe capacitate, rezultate și potrivire."]
+},
+{
+  "id": "boundary_kids",
+  "triggers_en": ["kids", "children", "child", "have kids"],
+  "triggers_de": ["kinder", "kind", "hat sie kinder"],
+  "triggers_ro": ["copii", "copil", "are copii"],
+  "answers_en": ["Personal details aren't relevant. Happy to discuss anything else."],
+  "answers_de": ["Persönliche Details sind nicht relevant. Gerne bespreche ich alles andere."],
+  "answers_ro": ["Detaliile personale nu sunt relevante. Cu plăcere discutăm despre orice altceva."]
+},
+{
+  "id": "boundary_marital",
+  "triggers_en": ["married", "single", "relationship", "marital"],
+  "triggers_de": ["verheiratet", "ledig", "beziehung", "ist sie verheiratet"],
+  "triggers_ro": ["casatorita", "casatorit", "relatie", "stare civila"],
+  "answers_en": ["Let's keep the focus on experience, decision-making, and outcomes."],
+  "answers_de": ["Lassen Sie uns auf Erfahrung, Entscheidungsfindung und Ergebnisse konzentrieren."],
+  "answers_ro": ["Să păstrăm discuția concentrată pe experiență, procesul decizional și rezultatele."]
+},
+{
+  "id": "boundary_salary",
+  "triggers_en": ["salary", "pay", "compensation", "gehalt"],
+  "triggers_de": ["gehalt", "bezahlung", "vergütung"],
+  "triggers_ro": ["salariu", "compensare", "cat castiga"],
+  "answers_en": ["Salary expectations depend on role scope and market benchmarks - best aligned during formal discussions."],
+  "answers_de": ["Gehaltsvorstellungen hängen von Rollenumfang und Marktbenchmarks ab – am besten in formellen Gesprächen abzustimmen."],
+  "answers_ro": ["Așteptările salariale depind de amploarea rolului și benchmark-urile de piață – cel mai bine aliniate în discuții formale."]
+},
+    {
       "id": "tmays_resume_walkthrough",
       "triggers_en": ["walk me through", "resume", "cv overview", "about herself", "about cristina", "profile summary", "career summary", "background", "tell me about yourself"],
       "triggers_de": ["führ mich durch ihren lebenslauf", "lebenslauf", "über cristina", "profil zusammenfassung", "karriere überblick", "hintergrund", "erzähl mir von ihr"],
