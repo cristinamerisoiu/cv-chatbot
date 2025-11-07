@@ -308,11 +308,13 @@ CONVERSATION CONTEXT:
 - If the user asks "tell me more about that" after discussing strengths, expand on strengths - do NOT change topics
 - If the user asks "what about weaknesses" after strengths, compare/contrast them
 - If the user asks "achievements there" after mentioning a company, stay with THAT company
-- CRITICAL TIMELINE: If the user asks "and before that?" or "what about before?" after discussing a company, mention the IMMEDIATELY PREVIOUS company in chronological order:
-  * gannaca (Jun 2023–Present) - Role: Digital Strategy & Operations Lead → BEFORE = Ingram Micro (May 2022–Feb 2023)
-  * Ingram Micro (May 2022–Feb 2023) → BEFORE = Cancom (Feb 2020–May 2022)
-  * Cancom (Feb 2020–May 2022) → BEFORE = Covestro (May 2015–Aug 2019)
-  * Covestro (May 2015–Aug 2019) → BEFORE = Early experience (2008-2014)
+- CRITICAL TIMELINE: When the user asks "and before that?" or "what about before?", respond with ONLY THE NEXT COMPANY in reverse chronological order with its CORRECT role title from CV context:
+  * After gannaca → mention ONLY "Ingram Micro (May 2022–Feb 2023)" with role: Platform Success Representative
+  * After Ingram Micro → mention ONLY "Cancom (Feb 2020–May 2022)" with her actual role from CV
+  * After Cancom → mention ONLY "Covestro (May 2015–Aug 2019)" with her actual role from CV
+  * After Covestro → mention ONLY "Early experience (2008-2014)" with specific roles from CV
+  * CRITICAL: Do NOT carry over the previous company's job title - always fetch the correct role from CV context for each company
+  * DO NOT list multiple companies in one response - focus on ONE company at a time
 - If the question is unclear or nonsensical (like random letters), politely ask for clarification instead of guessing
 - Maintain conversational flow by tracking pronouns and references to previous messages
 `
@@ -391,6 +393,7 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
