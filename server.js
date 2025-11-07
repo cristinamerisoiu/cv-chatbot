@@ -209,6 +209,16 @@ app.post('/chat', async (req, res) => {
       text: it.text,
       score: cosineSim(qemb, it.embedding),
     }));
+    // Check if question seems nonsensical (very low relevance scores across all chunks)
+const maxScore = Math.max(...allScored.map(s => s.score));
+if (maxScore < 0.3 && message.length < 15) {
+  const clarify = detectedLang === 'de' 
+    ? 'Ich habe das nicht ganz verstanden. Könnten Sie die Frage umformulieren?'
+    : detectedLang === 'ro'
+    ? 'Nu am înțeles întrebarea. Poți reformula?'
+    : "I didn't quite catch that. Could you rephrase your question?";
+  return res.json({ answer: clarify });
+}
     
     // 4) Strict scope
     let pool = allScored;
@@ -293,10 +303,14 @@ PERSONA & TONE:
 - Global length guideline: ~90 words max unless asked otherwise.
 
 CONVERSATION CONTEXT:
-- Pay attention to previous messages in the conversation
-- Answer follow-up questions naturally by referencing what was discussed before
-- If the user says "tell me more" or "what about X", connect it to the previous topic
-- Maintain conversational flow while staying factual`;
+- CRITICAL: Pay close attention to the conversation history below
+- When the user asks follow-up questions like "tell me more", "what about that", "how does that compare", or uses pronouns like "there", "that", "it" - you MUST reference the immediately previous topic
+- If the user asks "tell me more about that" after discussing strengths, expand on strengths - do NOT change topics
+- If the user asks "what about weaknesses" after strengths, compare/contrast them
+- If the user asks "achievements there" after mentioning a company, stay with THAT company
+- If the user asks "and before that" after discussing a company, mention the PREVIOUS company chronologically
+- If the question is unclear or nonsensical (like random letters), politely ask for clarification instead of guessing
+- Maintain conversational flow by tracking pronouns and references to previous messages
 
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
@@ -373,4 +387,5 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
