@@ -4,6 +4,13 @@ const chatBox = document.getElementById("chat-box");
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 
+// --- Generate or get session ID for conversation memory ---
+let sessionId = localStorage.getItem('chatSessionId');
+if (!sessionId) {
+  sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem('chatSessionId', sessionId);
+}
+
 // --- Detect browser language ---
 function detectBrowserLanguage() {
   const browserLang = navigator.language || navigator.userLanguage;
@@ -151,14 +158,15 @@ function hideTyping() {
   if (typing) typing.remove();
 }
 
-
-
-// --- Backend communication ---
+// --- Backend communication (NOW WITH SESSION ID) ---
 async function askBackend(question) {
   const res = await fetch(GPT_BACKEND_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: question })
+    body: JSON.stringify({ 
+      message: question,
+      sessionId: sessionId  // ← Added this for memory!
+    })
   });
   
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -193,8 +201,9 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// --- Initial greeting + sample questions ---
+// --- Initial greeting ---
 const userLang = detectBrowserLanguage();
+
 // Help Modal functionality
 const helpBtn = document.getElementById('help-btn');
 const helpModal = document.getElementById('help-modal');
@@ -224,8 +233,7 @@ document.querySelectorAll('.sample-question').forEach(btn => {
     document.getElementById('chat-form').dispatchEvent(new Event('submit'));
   });
 });
+
 const greeting = GREETINGS[userLang] || GREETINGS.en;
 addMessage("Cristina, Distilled", greeting);
-showSampleQuestions(userLang);
-
-
+// Removed showSampleQuestions(userLang) - no longer needed since they're in the help modal
