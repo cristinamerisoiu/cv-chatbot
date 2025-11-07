@@ -115,7 +115,7 @@ function detectTag(qLower) {
   if (/\bskills?\b/.test(qLower)) return 'skills';
   if (/\btools?\b|\bsystems?\b|\bstack\b/.test(qLower)) return 'tools';
   if (/\blanguages?\b|\bromanian\b|\bgerman\b|\benglish\b/.test(qLower)) return 'languages';
-  if (/(early experience|voluntary roles|2008|2016)/.test(qLower)) return 'early';
+  if /(early experience|voluntary roles|2008|2016)/.test(qLower)) return 'early';
   if (/\bcertifications?\b|\btraining\b|\bcourses?\b/.test(qLower)) return 'certifications';
   return null;
 }
@@ -152,14 +152,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 app.get('/ping', (_, res) => res.json({ ok: true, chunks: KB.length }));
-// ---------- Chat ----------
-app.post('/chat', async (req, res) => {
-  // ---------- Store conversation history per session ----------
+
+// ---------- Store conversation history per session ----------
 const conversations = new Map(); // sessionId -> message history
 
 // ---------- Chat ----------
 app.post('/chat', async (req, res) => {
-  const { message, sessionId } = req.body || {}; // ← Added sessionId here
+  const { message, sessionId } = req.body || {};
   const debug = req.query.debug === 'true';
   try {
     if (!message || !message.trim()) {
@@ -374,5 +373,3 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
