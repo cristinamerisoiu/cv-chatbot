@@ -210,7 +210,16 @@ app.post('/chat', async (req, res) => {
       score: cosineSim(qemb, it.embedding),
     }));
 
-    
+    // Check if question is nonsense (very low similarity + short length)
+const maxScore = Math.max(...allScored.map(s => s.score));
+if (maxScore < 0.35 && message.length < 20) {
+  const clarify = detectedLang === 'de' 
+    ? 'Ich habe das nicht ganz verstanden. Könnten Sie die Frage umformulieren?'
+    : detectedLang === 'ro'
+    ? 'Nu am înțeles întrebarea. Poți reformula?'
+    : "I didn't quite catch that. Could you rephrase your question?";
+  return res.json({ answer: clarify });
+}
     // 4) Strict scope
     let pool = allScored;
     if (desiredTag) {
@@ -384,6 +393,7 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
