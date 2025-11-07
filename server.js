@@ -154,7 +154,12 @@ app.get('/', (req, res) => {
 app.get('/ping', (_, res) => res.json({ ok: true, chunks: KB.length }));
 // ---------- Chat ----------
 app.post('/chat', async (req, res) => {
-  const { message } = req.body || {};
+  // ---------- Store conversation history per session ----------
+const conversations = new Map(); // sessionId -> message history
+
+// ---------- Chat ----------
+app.post('/chat', async (req, res) => {
+  const { message, sessionId } = req.body || {}; // ← Added sessionId here
   const debug = req.query.debug === 'true';
   try {
     if (!message || !message.trim()) {
@@ -163,6 +168,13 @@ app.post('/chat', async (req, res) => {
     if (!KB.length) {
       return res.json({ answer: "I don't have Cristina's CV context loaded yet." });
     }
+    
+    // Get or create conversation history for this session
+    const sid = sessionId || 'default';
+    if (!conversations.has(sid)) {
+      conversations.set(sid, []);
+    }
+    const history = conversations.get(sid);
     
     // Detect language using OpenAI
     const detectedLang = await detectLanguage(message);
@@ -175,7 +187,14 @@ app.post('/chat', async (req, res) => {
     
     // 1) Check interview clusters first (handles common questions in all languages)
     const canned = interviewAnswer(message, detectedLang);
-    if (canned) return res.json({ answer: canned });
+    if (canned) {
+      // Add to history
+      history.push({ role: 'user', content: message });
+      history.push({ role: 'assistant', content: canned });
+      if (history.length > 20) history.splice(0, history.length - 20);
+      
+      return res.json({ answer: canned });
+    }
     
     // 2) Embed the question
     const emb = await openai.embeddings.create({
@@ -272,7 +291,13 @@ PERSONA & TONE:
 - Tone: professional, succinct, sharp; confident without hype; zero fluff; high verbal precision.
 - Always reformulate—do not copy CV sentences verbatim. Use ONLY the provided context.
 - Avoid buzzwords and filler. Never use the word 'chaos'.
-- Global length guideline: ~90 words max unless asked otherwise.`;
+- Global length guideline: ~90 words max unless asked otherwise.
+
+CONVERSATION CONTEXT:
+- Pay attention to previous messages in the conversation
+- Answer follow-up questions naturally by referencing what was discussed before
+- If the user says "tell me more" or "what about X", connect it to the previous topic
+- Maintain conversational flow while staying factual`;
 
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
@@ -294,20 +319,33 @@ PERSONA & TONE:
         : 'CONTEXT:\n(none)\n\n') +
       `QUESTION: ${message}\n\n${scopeRules}\n${sectionHint}\n${styleHint}`;
     
+    // Build messages array with conversation history
+    const messages = [
+      { role: 'system', content: personaSystem }
+    ];
+    
+    // Add conversation history (last 6 messages = 3 exchanges)
+    const recentHistory = history.slice(-6);
+    messages.push(...recentHistory);
+    
+    // Add current question
+    messages.push({ role: 'user', content: userContent });
+    
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: personaSystem },
-        { role: 'user', content: userContent },
-      ],
+      messages: messages,
       temperature: isCompany ? 0.5 : 0.6,
       max_tokens: 260
     });
     
     let reply = completion.choices?.[0]?.message?.content || 'No reply.';
     reply = reply.replace(/Cristina Merisoiu/gi, 'Cristina');
-    // REMOVED enforceThirdPerson - OpenAI handles this via system prompt
     reply = enforceShort(reply, maxWords);
+    
+    // Add to history
+    history.push({ role: 'user', content: message });
+    history.push({ role: 'assistant', content: reply });
+    if (history.length > 20) history.splice(0, history.length - 20);
     
     if (debug) {
       return res.json({
@@ -336,4 +374,5 @@ PERSONA & TONE:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
