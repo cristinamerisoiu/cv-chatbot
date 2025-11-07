@@ -308,7 +308,11 @@ CONVERSATION CONTEXT:
 - If the user asks "tell me more about that" after discussing strengths, expand on strengths - do NOT change topics
 - If the user asks "what about weaknesses" after strengths, compare/contrast them
 - If the user asks "achievements there" after mentioning a company, stay with THAT company
-- If the user asks "and before that" after discussing a company, mention the PREVIOUS company chronologically
+- CRITICAL TIMELINE: If the user asks "and before that?" or "what about before?" after discussing a company, mention the IMMEDIATELY PREVIOUS company in chronological order:
+  * gannaca (Jun 2023–Present) - Role: Digital Strategy & Operations Lead → BEFORE = Ingram Micro (May 2022–Feb 2023)
+  * Ingram Micro (May 2022–Feb 2023) → BEFORE = Cancom (Feb 2020–May 2022)
+  * Cancom (Feb 2020–May 2022) → BEFORE = Covestro (May 2015–Aug 2019)
+  * Covestro (May 2015–Aug 2019) → BEFORE = Early experience (2008-2014)
 - If the question is unclear or nonsensical (like random letters), politely ask for clarification instead of guessing
 - Maintain conversational flow by tracking pronouns and references to previous messages
 `
@@ -387,6 +391,7 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
 
