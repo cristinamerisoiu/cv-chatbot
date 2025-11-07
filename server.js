@@ -311,7 +311,7 @@ CONVERSATION CONTEXT:
 - If the user asks "and before that" after discussing a company, mention the PREVIOUS company chronologically
 - If the question is unclear or nonsensical (like random letters), politely ask for clarification instead of guessing
 - Maintain conversational flow by tracking pronouns and references to previous messages
-
+`
     const scopeRules = isCompany
       ? "For company questions: FIRST line must clearly state role title and timeframe from context. Example: 'Strategic Operator & Systems Architect (Jun 2023–Present)'. Do NOT mention other companies."
       : "For section questions (skills/tools/languages/education/certifications/early): Enumerate ALL relevant items from that section; do NOT omit items or summarize them away. Do NOT mention companies or tasks.";
@@ -387,5 +387,6 @@ CONVERSATION CONTEXT:
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 
 
